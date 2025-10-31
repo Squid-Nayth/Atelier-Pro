@@ -11,16 +11,15 @@ Application Java en ligne de commande permettant la gestion des employés des li
 ### Prérequis
 
 * **Java JDK 17** ou supérieur installé sur votre ordinateur.
-* **Eclipse IDE**, il est fortement recommandé d'utiliser cette IDE car le projet est configuré pour Eclipse, vous pouvez l'importer sur un autre IDE mais vous devrez installez les dépendances vous même sous peine de rencontrez des erreurs.
-* **Git et Github Desktop** pour cloner le dépôt et contribuer à ce dépôt.
+* **Eclipse IDE**, il est fortement recommandé d'utiliser cette IDE car le projet est configuré pour Eclipse, néamoins vous pouvez l'importer sur un autre IDE mais vous devrez installez les dépendances vous même sous peine de rencontrez des erreurs.
+* **Git et Github Desktop** pour cloner le dépôt et contribuer à ce même dépôt.
 
 ### Installation
 
 ```bash
 git clone https://github.com/Squid-Nayth/https/Atelier-Pro.git
 ```
-* **Si vous rencontrez des problèmes au niveau de l'importation du projet sur eclipse, consultez la section "Importation du projet" du [Contributing.md](./Contributing.md).**
-
+* **Si vous rencontrez des problèmes au niveau de l'importation du projet sur Eclipse, consultez la section "Importation du projet" du [Contributing.md](./Contributing.md).**
 
 
 1. Ouvrir le projet dans **Eclipse**
@@ -31,9 +30,8 @@ git clone https://github.com/Squid-Nayth/https/Atelier-Pro.git
 
 ## Ressources fournies
 
-* [Code source sur GitHub](https://github.com/alexandreMesle/personnel)
+* [Code source du dépôt d'origine](https://github.com/alexandreMesle/personnel)
 * [Documentation du projet](https://enseignement.alexandre-mesle.com/PPE/personnel/javadoc/)
-* [Bibliothèque de dialogue en ligne de commande](https://github.com/alexandreMesle/CommandLine)
 
 ---
 
@@ -45,6 +43,6 @@ Afin de contribuer correctement à ce dépot, veuillez vous referez à ce docume
 
 ## Licence
 
-Ce projet est distribué sous MIT.
+Ce projet est distribué sous licence MIT.
 
 ---
