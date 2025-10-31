@@ -47,6 +47,5 @@ Afin de contribuer correctement à ce dépot, veuillez vous referez à ce docume
 ## Licence
 
 Ce projet est distribué sous MIT.
-Voir le fichier [Licence.md](./Licence.md) pour les détails.
 
 ---
