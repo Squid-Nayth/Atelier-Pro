@@ -3,7 +3,6 @@
 ## Description
 
 Application Java en ligne de commande permettant la gestion des employés des ligues de la M2L.
-Elle repose sur une architecture 3-tiers.
 
 ---
 
