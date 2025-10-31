@@ -11,9 +11,9 @@ Elle repose sur une architecture 3-tiers.
 
 ### Prérequis
 
-* **Java JDK 17** ou supérieur installé sur votre ordianteur.
-* **Eclipse IDE**, car le projet est configuré pour Eclipse, vous pouvez l'importer sur un autre IDE mais vous devez installez les dépendances vous même.
-* **Git et Github Desktop** pour cloner le dépôt.
+* **Java JDK 17** ou supérieur installé sur votre ordinateur.
+* **Eclipse IDE**, il est fortement recommandé d'utiliser cette IDE car le projet est configuré pour Eclipse, vous pouvez l'importer sur un autre IDE mais vous devrez installez les dépendances vous même sous peine de rencontrez des erreurs.
+* **Git et Github Desktop** pour cloner le dépôt et contribuer à ce dépôt.
 
 ### Installation
 
