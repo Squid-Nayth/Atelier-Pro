@@ -24,9 +24,10 @@ Les commentaires doivent être utilisés **uniquement lorsque cela est nécessai
 ### Conventions de nommage à respecter :
 
 * **camelCase** pour les noms de variables et de fonctions
-* **PascalCase** pour les noms de classes et de composants
+* **PascalCase** pour les noms de classes.
 * **kebab-case** pour les noms de fichiers, ressources et images
-* Le **langage utilisé** pour le nommage de l’ensemble des éléments du projet (fichiers, dossiers, variables, etc.) ainsi que pour la rédaction des **commentaires** sera le **français**.
+
+Le **langage utilisé** pour le nommage de l’ensemble des éléments du projet (fichiers, dossiers, variables, etc.) ainsi que pour la rédaction des **commentaires** sera le **français**.
 Ce choix s’explique par le fait que le code source initial est majoritairement rédigé en français, ce qui garantit une **meilleure compréhension et cohérence** au sein de l’équipe de développement.
 
 ---
@@ -48,8 +49,6 @@ C’est la branche principale de **développement actif**.
 Toutes les nouvelles branches de fonctionnalités ou de corrections doivent en dériver.
 Elle peut contenir des bugs importants ou des erreurs de compilation, car elle évolue en continu.
 
-> 💡 Pour contribuer efficacement, créez une **nouvelle branche de fonctionnalités** à partir de `dev`, effectuez vos modifications, puis soumettez une **pull request**.
-
 ---
 
 ### **Branches de fonctionnalités**
@@ -62,22 +61,14 @@ Pour les améliorations d’éléments déjà existants, utilisez le préfixe :
 ### **Branches de corrections**
 
 `fixes/`
-Elles servent à la **correction d’un bug précis** détecté dans la branche de développement.
+Elles servent à la **correction d’un bug précis** (et non de plusieurs bugs) détecté dans la branche de développement.
 
 ### **Branches de versions**
 
 `releases/`
 Ces branches conservent les **versions archivées** du projet, permettant de garder une trace des évolutions et itérations du code.
 
----
-
-## Bonnes pratiques
-
-* Respectez scrupuleusement les **préfixes** de branches mentionnés ci-dessus.
-* Créez **une branche par problème spécifique** (nouvelle fonctionnalité, amélioration ou correction).
-* Décrivez clairement vos commits et pull requests pour faciliter la revue du code.
-
----
+Pour contribuer efficacement, créez une **nouvelle branche de fonctionnalités** à partir de `dev`, effectuez vos modifications, puis soumettez une **pull request** aussi veuillez à respectez scrupuleusement les **préfixes** de branches mentionnés ci-dessus afin d'assurer une meilleure cohérences entre les différentes branches du projet et pour mieux spécifier leurs objectifs.
 
 > Ce guide est **en cours de rédaction** et sera complété ultérieurement...
 
