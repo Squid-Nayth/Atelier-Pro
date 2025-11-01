@@ -1,63 +1,86 @@
 # Guide du Contributeur
 
-Ce document répertorie les points les plus importants à connaître pour l’équipe de ce dépôt afin de contribuer au projet **Atelier pro**, notamment via des **rapports de bugs** ou des **pull requests**.
+Ce document présente les informations essentielles pour les membres de l’équipe souhaitant **contribuer au projet Atelier Pro**, notamment à travers des **rapports de bugs** ou des **pull requests**.
 
-Ce projet est développé avec **Java, JDBC**, et intégrera plus tard **MySQL**.
+Le projet est développé en **Java** avec **JDBC**, et intégrera prochainement une base de données **MySQL**.
 
-> Avant de contribuer, veuillez lire le fichier [README](README.md) afin de prendre connaissance des prérequis du projet.
+> 📖 Avant toute contribution, veuillez consulter le fichier [README](README.md) afin de prendre connaissance des prérequis techniques et du fonctionnement global du projet.
 
 ---
 
 ## Table des matières
 
-* [Style du code](#Style-de-code)
-* [Branches](#Branches)
+* [Style de code](#style-de-code)
+* [Branches](#branches)
 * [Contribution via pull requests](#contribution-via-pull-requests)
-* [Licence](#licence)
 
 ---
 
-## Style de code
+## Style du code
 
-Pour assurer une meilleure lisibilité et une vision claire du travail effectué, veillez à rendre votre code **propre** et **facile à maintenir**.
-Ajoutez également des commentaires **uniquement** lorsque cela est nécessaire pour apporter des précisions sur votre code.
+Pour garantir une meilleure **lisibilité** et une **maintenance facilitée** du code, veillez à produire un code **propre**, **structuré** et **cohérent**.
+Les commentaires doivent être utilisés **uniquement lorsque cela est nécessaire**, afin d’expliquer des parties complexes ou des choix particuliers.
 
-Ce dépôt demande le respect des conventions de nommage suivantes :
+### Conventions de nommage à respecter :
 
-* **camelCase** : pour les noms de variables et de fonctions
-* **PascalCase** : pour les noms de composants
-* **kebab-case** : pour les ressources (images, fichiers, etc.)
+* **camelCase** pour les noms de variables et de fonctions
+* **PascalCase** pour les noms de classes et de composants
+* **kebab-case** pour les noms de fichiers, ressources et images
+* Le **langage utilisé** pour le nommage de l’ensemble des éléments du projet (fichiers, dossiers, variables, etc.) ainsi que pour la rédaction des **commentaires** sera le **français**.
+Ce choix s’explique par le fait que le code source initial est majoritairement rédigé en français, ce qui garantit une **meilleure compréhension et cohérence** au sein de l’équipe de développement.
 
 ---
 
 ## Branches
 
-Le code source du projet est divisé en plusieurs branches :
+Le dépôt est organisé en plusieurs branches, chacune ayant un rôle bien défini :
 
-* **[Branche stable](https://github.com/Squid-Nayth/Atelier-Pro/tree/stable)** :
-  Il s’agit de la version la plus stable du dépôt.
-  Elle ne contient pas de bugs critiques et est principalement utilisée pour l'utilisation et la compilation du projet.
+### **Branche stable**
 
-* **[Branche dev](https://github.com/Entertainment-Visual-Art-Studio/Screenfix/tree/dev)** :
-  C’est la branche principale de développement, sur laquelle l’équipe travaille activement.
-  Toutes les autres branches de développement sont rattachées à celle-ci.
-  C’est la branche la plus active du dépôt et elle est continuellement testée par l’équipe.
-  Elle peut contenir des bugs majeurs, voire ne pas compiler du tout.
-  La meilleure façon de contribuer à cette branche est de **créer une nouvelle branche dérivée** d’elle, puis d’y apporter vos modifications.
+👉 [stable](https://github.com/Squid-Nayth/Atelier-Pro/tree/stable)
+Cette branche contient la version la plus fiable du projet.
+Elle ne présente aucun bug critique et sert de référence pour la compilation et l’utilisation du programme.
 
-* **Branches de fonctionnalités (`features/`)** :
-  Les branches dont le nom commence par `features/` sont créées pour **implémenter une nouvelle fonctionnalité**.
-  Les branches destinées à **améliorer une fonctionnalité existante** doivent utiliser le préfixe `features/improve/`.
+### **Branche de développement**
 
-* **Branches de correction (`fixes/`)** :
-  Les branches dont le nom commence par `fixes/` sont créées pour **corriger un bug spécifique** présent dans la branche de développement.
+👉 [dev](https://github.com/Entertainment-Visual-Art-Studio/Screenfix/tree/dev)
+C’est la branche principale de **développement actif**.
+Toutes les nouvelles branches de fonctionnalités ou de corrections doivent en dériver.
+Elle peut contenir des bugs importants ou des erreurs de compilation, car elle évolue en continu.
 
-* **Branches de version (`releases/`)** :
-  Ces branches conservent les **anciennes versions** du site afin de garder une trace des **archives du code**.
+> 💡 Pour contribuer efficacement, créez une **nouvelle branche de fonctionnalités** à partir de `dev`, effectuez vos modifications, puis soumettez une **pull request**.
 
 ---
 
-Veuillez **respecter les préfixes** mentionnés ci-dessus et **créer une seule branche par problème spécifique**, qu’il s’agisse d’une **nouvelle fonctionnalité**, d’une **amélioration**, ou d’une **correction de bug**.
+### **Branches de fonctionnalités**
 
-**Ce document est encore en cours d'écriture...**
+`features/`
+Ces branches sont destinées à l’**ajout d’une nouvelle fonctionnalité**.
+Pour les améliorations d’éléments déjà existants, utilisez le préfixe :
+`features/improve/`.
+
+### **Branches de corrections**
+
+`fixes/`
+Elles servent à la **correction d’un bug précis** détecté dans la branche de développement.
+
+### **Branches de versions**
+
+`releases/`
+Ces branches conservent les **versions archivées** du projet, permettant de garder une trace des évolutions et itérations du code.
+
+---
+
+## Bonnes pratiques
+
+* Respectez scrupuleusement les **préfixes** de branches mentionnés ci-dessus.
+* Créez **une branche par problème spécifique** (nouvelle fonctionnalité, amélioration ou correction).
+* Décrivez clairement vos commits et pull requests pour faciliter la revue du code.
+
+---
+
+> Ce guide est **en cours de rédaction** et sera complété ultérieurement...
+
+---
+
 
