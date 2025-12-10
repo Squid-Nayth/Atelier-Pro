@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+//Bonjour
+
 import personnel.*;
 
 public class JDBC implements Passerelle 
