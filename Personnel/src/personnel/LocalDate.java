@@ -3,24 +3,24 @@ package personnel;
 import java.sql.Date;
 
 public class LocalDate {
-	private Date dateArrivee ;
-	private Date dateDepart ;
+	private LocalDate dateArrivee ;
+	private LocalDate dateDepart ;
 	
-	LocalDate(Date dateArrivee, Date dateDepart){
+	LocalDate(LocalDate dateArrivee, LocalDate dateDepart){
 		this.dateArrivee = dateArrivee;
 		this.dateDepart = dateDepart;
 	}
 	
-	public void setDateArrivee(Date dateArrivee) {
+	public void setDateArrivee(LocalDate dateArrivee) {
 		this.dateArrivee = dateArrivee;
 	}
-	public void setDateDepart(Date dateDepart) {
+	public void setDateDepart(LocalDate dateDepart) {
 		this.dateDepart = dateDepart;
 	}
-	public Date getDateArrivee() {
+	public LocalDate getDateArrivee() {
 		return dateArrivee;
 	}
-	public Date setDateDepart() {
+	public LocalDate setDateDepart() {
 		return dateDepart;
 	}
 	
