@@ -145,7 +145,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	 */
 	
 	public Ligue getLigue()
-	{
+	{ 
 		return ligue;
 	}
 
@@ -179,7 +179,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	@Override
 	public String toString()
 	{
-		String res = nom + " " + prenom + " " + mail + " (";
+		String res = nom + " " + prenom + " " + mail + " " +localDate +" (";
 		if (estRoot())
 			res += "super-utilisateur";
 		else

@@ -1,27 +1,32 @@
 package personnel;
 
-import java.sql.Date;
 
 public class LocalDate {
-	private LocalDate dateArrivee ;
-	private LocalDate dateDepart ;
+	private java.time.LocalDate dateArrivee ;
+	private java.time.LocalDate dateDepart ;
 	
-	LocalDate(LocalDate dateArrivee, LocalDate dateDepart){
+	public LocalDate(java.time.LocalDate dateArrivee, java.time.LocalDate dateDepart){
 		this.dateArrivee = dateArrivee;
 		this.dateDepart = dateDepart;
 	}
 	
-	public void setDateArrivee(LocalDate dateArrivee) {
+	public void setDateArrivee(java.time.LocalDate dateArrivee) {
 		this.dateArrivee = dateArrivee;
 	}
-	public void setDateDepart(LocalDate dateDepart) {
+	public void setDateDepart(java.time.LocalDate dateDepart) {
 		this.dateDepart = dateDepart;
 	}
-	public LocalDate getDateArrivee() {
+	public java.time.LocalDate getDateArrivee() {
 		return dateArrivee;
 	}
-	public LocalDate setDateDepart() {
+	public java.time.LocalDate getDateDepart() {
 		return dateDepart;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return getDateArrivee() + " " + getDateDepart() ;
 	}
 	
 	
