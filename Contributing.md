@@ -70,8 +70,6 @@ Ces branches conservent les **versions archivées** du projet, permettant de gar
 
 Pour contribuer efficacement, créez une **nouvelle branche de fonctionnalités** à partir de `dev`, effectuez vos modifications, puis soumettez une **pull request** aussi veuillez à respectez scrupuleusement les **préfixes** de branches mentionnés ci-dessus afin d'assurer une meilleure cohérences entre les différentes branches du projet et pour mieux spécifier leurs objectifs.
 
-> Ce guide est **en cours de rédaction** et sera complété ultérieurement...
-
 ---
 
 
