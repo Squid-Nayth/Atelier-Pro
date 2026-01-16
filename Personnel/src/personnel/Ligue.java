@@ -105,14 +105,26 @@ public class Ligue implements Serializable, Comparable<Ligue>
 	 * @param prenom le prénom de l'employé.
 	 * @param mail l'adresse mail de l'employé.
 	 * @param password le password de l'employé.
+	 * @param dateArrivee la date d'arrivée de l'employé.
+	 * @param dateDepart la date de départ de l'employé.
 	 * @return l'employé créé. 
 	 */
 
-	public Employe addEmploye(String nom, String prenom, String mail, String password, LocalDate localDate)
+	public Employe addEmploye(String nom, String prenom, String mail, String password, java.time.LocalDate dateArrivee, java.time.LocalDate dateDepart)
 	{
-		Employe employe = new Employe(this.gestionPersonnel, this, nom, prenom, mail, password, localDate);
+		Employe employe = new Employe(this.gestionPersonnel, this, nom, prenom, mail, password, dateArrivee, dateDepart);
 		employes.add(employe);
 		return employe;
+	}
+
+	/**
+	 * Surcharge utile pour l'interface console : crée un employé sans dates
+	 * (utilise des dates par défaut : aujourd'hui et aujourd'hui).
+	 */
+	public Employe addEmploye(String nom, String prenom, String mail, String password)
+	{
+		java.time.LocalDate today = java.time.LocalDate.now();
+		return addEmploye(nom, prenom, mail, password, today, today);
 	}
 	
 	void remove(Employe employe)

@@ -17,9 +17,12 @@ public class Employe implements Serializable, Comparable<Employe>
 	private String nom, prenom, password, mail;
 	private Ligue ligue;
 	private GestionPersonnel gestionPersonnel;
-	private LocalDate localDate;
+	// dates de l'employé (remplacent la classe personnel.LocalDate)
+	private java.time.LocalDate dateArrivee;
+	private java.time.LocalDate dateDepart;
 	
-	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, String nom, String prenom, String mail, String password, LocalDate localDate )
+	
+	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, String nom, String prenom, String mail, String password, java.time.LocalDate dateArrivee, java.time.LocalDate dateDepart )
 	{
 		this.gestionPersonnel = gestionPersonnel;
 		this.nom = nom;
@@ -27,9 +30,9 @@ public class Employe implements Serializable, Comparable<Employe>
 		this.password = password;
 		this.mail = mail;
 		this.ligue = ligue;
-		this.localDate = localDate;
-		
-		
+		// validation des dates
+		setDateArrivee(dateArrivee);
+		setDateDepart(dateDepart);
 	}
 	
 	/**
@@ -179,11 +182,39 @@ public class Employe implements Serializable, Comparable<Employe>
 	@Override
 	public String toString()
 	{
-		String res = nom + " " + prenom + " " + mail + " " +localDate +" (";
+		String res = nom + " " + prenom + " " + mail + " " + dateArrivee + " - " + dateDepart + " (";
 		if (estRoot())
 			res += "super-utilisateur";
 		else
 			res += ligue.toString();
 		return res + ")";
+	}
+
+	// getters et setters pour les dates
+	public java.time.LocalDate getDateArrivee() {
+		return dateArrivee;
+	}
+
+	public java.time.LocalDate getDateDepart() {
+		return dateDepart;
+	}
+
+	public void setDateArrivee(java.time.LocalDate dateArrivee) {
+		if(dateArrivee == null) {
+			throw new IllegalArgumentException("La date d'arrivée ne peut être null");
+		}
+		if (this.dateDepart != null && dateArrivee.isAfter(this.dateDepart)) {
+			throw new IllegalArgumentException("La nouvelle date d'arriver( " + dateArrivee + " ) ne peut pas être postérieure à la date de départ (" + this.dateDepart + ")");
+		}
+		this.dateArrivee = dateArrivee;
+	}
+	public void setDateDepart(java.time.LocalDate dateDepart) {
+		if(dateDepart == null) {
+			throw new IllegalArgumentException("La date de départ ne peut être null ");
+		}
+		if (this.dateArrivee != null && dateDepart.isBefore(this.dateArrivee)) {
+			throw new IllegalArgumentException("La nouvelle date de départ(" + dateDepart + ") ne peut pas être antérieure à la date d'arrivée(" + this.dateArrivee + ")" );
+		}
+		this.dateDepart = dateDepart;
 	}
 }

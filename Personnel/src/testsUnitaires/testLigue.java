@@ -18,8 +18,9 @@ class testLigue
 			l.setNom("LigueRenommee");
 			assertEquals("LigueRenommee", l.getNom());
 			assertEquals(gestionPersonnel.getRoot(), l.getAdministrateur());
-			LocalDate dates = new LocalDate(java.time.LocalDate.of(2022,1,1), java.time.LocalDate.of(2023,1,1));
-			Employe e = l.addEmploye("NomE", "PrenomE", "e@mail", "pwd", dates);
+			java.time.LocalDate datesArr = java.time.LocalDate.of(2022,1,1);
+			java.time.LocalDate datesDep = java.time.LocalDate.of(2023,1,1);
+			Employe e = l.addEmploye("NomE", "PrenomE", "e@mail", "pwd", datesArr, datesDep);
 			l.setAdministrateur(e);
 			assertEquals(e, l.getAdministrateur());
 		} finally {
@@ -33,8 +34,9 @@ class testLigue
 	{
 		Ligue l = gestionPersonnel.addLigue("LigueEmploye");
 		try {
-			LocalDate dates = new LocalDate(java.time.LocalDate.of(2020,5,1), java.time.LocalDate.of(2022,5,1));
-			Employe e = l.addEmploye("Dupont", "Alice", "a.dupont@mail.com", "initpass", dates);
+			java.time.LocalDate datesArr = java.time.LocalDate.of(2020,5,1);
+			java.time.LocalDate datesDep = java.time.LocalDate.of(2022,5,1);
+			Employe e = l.addEmploye("Dupont", "Alice", "a.dupont@mail.com", "initpass", datesArr, datesDep);
 			assertEquals("Dupont", e.getNom());
 			assertEquals("Alice", e.getPrenom());
 			assertEquals("a.dupont@mail.com", e.getMail());
@@ -59,9 +61,10 @@ class testLigue
 	{
 		Ligue l = gestionPersonnel.addLigue("LigueSuppression");
 		try {
-			LocalDate dates = new LocalDate(java.time.LocalDate.of(2019,3,1), java.time.LocalDate.of(2022,3,1));
-			Employe admin = l.addEmploye("Admin", "Un", "admin@mail", "pwd", dates);
-			Employe user = l.addEmploye("User", "Deux", "user@mail", "pwd2", dates);
+			java.time.LocalDate datesArr = java.time.LocalDate.of(2019,3,1);
+			java.time.LocalDate datesDep = java.time.LocalDate.of(2022,3,1);
+			Employe admin = l.addEmploye("Admin", "Un", "admin@mail", "pwd", datesArr, datesDep);
+			Employe user = l.addEmploye("User", "Deux", "user@mail", "pwd2", datesArr, datesDep);
 			l.setAdministrateur(admin);
 			assertTrue(admin.estAdmin(l));
 			admin.remove();
@@ -78,9 +81,10 @@ class testLigue
 	void suppressionLigue() throws SauvegardeImpossible
 	{
 		Ligue l = gestionPersonnel.addLigue("LigueToRemove");
-		LocalDate dates = new LocalDate(java.time.LocalDate.of(2018,6,1), java.time.LocalDate.of(2019,6,1));
-		l.addEmploye("A", "B", "a@mail", "p", dates);
-		l.addEmploye("C", "D", "c@mail", "p2", dates);
+		java.time.LocalDate datesArr = java.time.LocalDate.of(2018,6,1);
+		java.time.LocalDate datesDep = java.time.LocalDate.of(2019,6,1);
+		l.addEmploye("A", "B", "a@mail", "p", datesArr, datesDep);
+		l.addEmploye("C", "D", "c@mail", "p2", datesArr, datesDep);
 		l.remove();
 		assertFalse(gestionPersonnel.getLigues().contains(l));
 	}
@@ -91,9 +95,10 @@ class testLigue
 		Ligue l1 = gestionPersonnel.addLigue("L1");
 		Ligue l2 = gestionPersonnel.addLigue("L2");
 		try {
-			LocalDate dates = new LocalDate(java.time.LocalDate.of(2021,7,1), java.time.LocalDate.of(2022,7,1));
-			Employe e1 = l1.addEmploye("E1", "P1", "e1@mail", "p1", dates);
-			Employe e2 = l2.addEmploye("E2", "P2", "e2@mail", "p2", dates);
+			java.time.LocalDate datesArr = java.time.LocalDate.of(2021,7,1);
+			java.time.LocalDate datesDep = java.time.LocalDate.of(2022,7,1);
+			Employe e1 = l1.addEmploye("E1", "P1", "e1@mail", "p1", datesArr, datesDep);
+			Employe e2 = l2.addEmploye("E2", "P2", "e2@mail", "p2", datesArr, datesDep);
 			assertThrows(DroitsInsuffisants.class, () -> l1.setAdministrateur(e2));
 		} finally {
 			l1.remove();
@@ -106,9 +111,10 @@ class testLigue
 	{
 		Ligue l = gestionPersonnel.addLigue("LigueAdminChange");
 		try {
-			LocalDate dates = new LocalDate(java.time.LocalDate.of(2021,2,1), java.time.LocalDate.of(2023,2,1));
-			Employe e1 = l.addEmploye("E1", "P1", "e1@mail", "p1", dates);
-			Employe e2 = l.addEmploye("E2", "P2", "e2@mail", "p2", dates);
+			java.time.LocalDate datesArr = java.time.LocalDate.of(2021,2,1);
+			java.time.LocalDate datesDep = java.time.LocalDate.of(2023,2,1);
+			Employe e1 = l.addEmploye("E1", "P1", "e1@mail", "p1", datesArr, datesDep);
+			Employe e2 = l.addEmploye("E2", "P2", "e2@mail", "p2", datesArr, datesDep);
 			l.setAdministrateur(e1);
 			assertTrue(e1.estAdmin(l));
 			l.setAdministrateur(e2);
