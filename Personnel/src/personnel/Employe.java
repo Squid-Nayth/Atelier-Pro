@@ -2,6 +2,7 @@ package personnel;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  * Employé d'une ligue hébergée par la M2L. Certains peuvent 
@@ -18,8 +19,8 @@ public class Employe implements Serializable, Comparable<Employe>
 	private Ligue ligue;
 	private GestionPersonnel gestionPersonnel;
 	// dates de l'employé (remplacent la classe personnel.LocalDate)
-	private java.time.LocalDate dateArrivee;
-	private java.time.LocalDate dateDepart;
+	private LocalDate dateArrivee;
+	private LocalDate dateDepart;
 	
 	
 	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, String nom, String prenom, String mail, String password, java.time.LocalDate dateArrivee, java.time.LocalDate dateDepart )
@@ -152,6 +153,9 @@ public class Employe implements Serializable, Comparable<Employe>
 		return ligue;
 	}
 
+	
+	
+
 	/**
 	 * Supprime l'employé. Si celui-ci est un administrateur, le root
 	 * récupère les droits d'administration sur sa ligue.
@@ -189,32 +193,50 @@ public class Employe implements Serializable, Comparable<Employe>
 			res += ligue.toString();
 		return res + ")";
 	}
-
+	
 	// getters et setters pour les dates
-	public java.time.LocalDate getDateArrivee() {
-		return dateArrivee;
+	
+		public LocalDate getDateArrivee() {
+			return dateArrivee;
+		}
+
+		public LocalDate getDateDepart() {
+			return dateDepart;
+		}
+
+		public void setDateArrivee(LocalDate dateArrivee) throws DateIncoherenteException {
+			if(dateArrivee == null) {
+				throw new DateIncoherenteException("La date d'arrivée ne peut être null");
+			}
+			if (this.dateDepart != null && dateArrivee.isAfter(this.dateDepart)) {
+				throw new DateIncoherenteException("La nouvelle date d'arrivée (" + dateArrivee + ") ne peut pas être postérieure à la date de départ (" + this.dateDepart + ")");
+			}
+			this.dateArrivee = dateArrivee;
+		}
+		
+		public void setDateDepart(LocalDate dateDepart) throws DateIncoherenteException {
+			if(dateDepart == null) {
+				throw new DateIncoherenteException("La date de départ ne peut être null");
+			}
+			if (this.dateArrivee != null && dateDepart.isBefore(this.dateArrivee)) {
+				throw new DateIncoherenteException("La nouvelle date de départ (" + dateDepart + ") ne peut pas être antérieure à la date d'arrivée (" + this.dateArrivee + ")");
+			}
+			this.dateDepart = dateDepart;
+		}
 	}
 
-	public java.time.LocalDate getDateDepart() {
-		return dateDepart;
+	/**
+	 * Exception levée lorsqu'une incohérence est détectée entre les dates
+	 * d'arrivée et de départ d'un employé.
+	 */
+	class DateIncoherenteException extends Exception {
+		private static final long serialVersionUID = 1L;
+		
+		public DateIncoherenteException(String message) {
+			super(message);
+		}
 	}
 
-	public void setDateArrivee(java.time.LocalDate dateArrivee) {
-		if(dateArrivee == null) {
-			throw new IllegalArgumentException("La date d'arrivée ne peut être null");
-		}
-		if (this.dateDepart != null && dateArrivee.isAfter(this.dateDepart)) {
-			throw new IllegalArgumentException("La nouvelle date d'arriver( " + dateArrivee + " ) ne peut pas être postérieure à la date de départ (" + this.dateDepart + ")");
-		}
-		this.dateArrivee = dateArrivee;
-	}
-	public void setDateDepart(java.time.LocalDate dateDepart) {
-		if(dateDepart == null) {
-			throw new IllegalArgumentException("La date de départ ne peut être null ");
-		}
-		if (this.dateArrivee != null && dateDepart.isBefore(this.dateArrivee)) {
-			throw new IllegalArgumentException("La nouvelle date de départ(" + dateDepart + ") ne peut pas être antérieure à la date d'arrivée(" + this.dateArrivee + ")" );
-		}
-		this.dateDepart = dateDepart;
-	}
-}
+
+
+	
