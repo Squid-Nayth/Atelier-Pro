@@ -224,19 +224,3 @@ public class Employe implements Serializable, Comparable<Employe>
 			this.dateDepart = dateDepart;
 		}
 	}
-
-	/**
-	 * Exception levée lorsqu'une incohérence est détectée entre les dates
-	 * d'arrivée et de départ d'un employé.
-	 */
-	class DateIncoherenteException extends Exception {
-		private static final long serialVersionUID = 1L;
-		
-		public DateIncoherenteException(String message) {
-			super(message);
-		}
-	}
-
-
-
-	

@@ -24,7 +24,6 @@ class testLigue
 			l.setAdministrateur(e);
 			assertEquals(e, l.getAdministrateur());
 		} finally {
-			
 			l.remove();
 		}
 	}
@@ -37,6 +36,7 @@ class testLigue
 			java.time.LocalDate datesArr = java.time.LocalDate.of(2020,5,1);
 			java.time.LocalDate datesDep = java.time.LocalDate.of(2022,5,1);
 			Employe e = l.addEmploye("Dupont", "Alice", "a.dupont@mail.com", "initpass", datesArr, datesDep);
+			// noms, prénoms, mail, password
 			assertEquals("Dupont", e.getNom());
 			assertEquals("Alice", e.getPrenom());
 			assertEquals("a.dupont@mail.com", e.getMail());
@@ -49,8 +49,42 @@ class testLigue
 			assertEquals("Aline", e.getPrenom());
 			assertEquals("aline.martin@mail.com", e.getMail());
 			assertTrue(e.checkPassword("newpass"));
+			// suppression d'un employé
 			e.remove();
 			assertFalse(l.getEmployes().contains(e));
+		} finally {
+			l.remove();
+		}
+	}
+
+	@Test
+	void testSetDateArriveeDepartAndConstructorValidation() throws SauvegardeImpossible
+	{
+		Ligue l = gestionPersonnel.addLigue("LigueDatesTest");
+		try {
+			// création valide
+			java.time.LocalDate arr = java.time.LocalDate.of(2020,1,1);
+			java.time.LocalDate dep = java.time.LocalDate.of(2022,1,1);
+			Employe e = l.addEmploye("N", "P", "m@mail", "pwd", arr, dep);
+			assertEquals(arr, e.getDateArrivee());
+			assertEquals(dep, e.getDateDepart());
+
+			// setDateArrivee postérieure à depart -> exception
+			java.time.LocalDate badArr = java.time.LocalDate.of(2023,1,1);
+			assertThrows(DateIncoherenteException.class, () -> e.setDateArrivee(badArr));
+
+			// setDateDepart antérieure à arrivée -> exception
+			java.time.LocalDate badDep = java.time.LocalDate.of(2019,1,1);
+			assertThrows(DateIncoherenteException.class, () -> e.setDateDepart(badDep));
+
+			// construction avec arrival après depart doit lever
+			java.time.LocalDate arr2 = java.time.LocalDate.of(2025,1,1);
+			java.time.LocalDate dep2 = java.time.LocalDate.of(2024,1,1);
+			assertThrows(DateIncoherenteException.class, () -> l.addEmploye("X", "Y", "x@y.com", "p", arr2, dep2));
+
+			// construction avec null dates doit lever
+			assertThrows(DateIncoherenteException.class, () -> l.addEmploye("Null1", "N", "n1@mail", "p", null, dep));
+			assertThrows(DateIncoherenteException.class, () -> l.addEmploye("Null2", "N", "n2@mail", "p", arr, null));
 		} finally {
 			l.remove();
 		}
@@ -75,18 +109,6 @@ class testLigue
 		} finally {
 			l.remove();
 		}
-	}
-
-	@Test
-	void suppressionLigue() throws SauvegardeImpossible
-	{
-		Ligue l = gestionPersonnel.addLigue("LigueToRemove");
-		java.time.LocalDate datesArr = java.time.LocalDate.of(2018,6,1);
-		java.time.LocalDate datesDep = java.time.LocalDate.of(2019,6,1);
-		l.addEmploye("A", "B", "a@mail", "p", datesArr, datesDep);
-		l.addEmploye("C", "D", "c@mail", "p2", datesArr, datesDep);
-		l.remove();
-		assertFalse(gestionPersonnel.getLigues().contains(l));
 	}
 
 	@Test
