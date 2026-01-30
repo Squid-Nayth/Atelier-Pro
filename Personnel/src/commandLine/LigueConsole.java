@@ -98,10 +98,17 @@ public class LigueConsole
 		return new Option("ajouter un employé", "a",
 				() -> 
 				{
-					ligue.addEmploye(getString("nom : "), 
-						getString("prenom : "), getString("mail : "), 
-						getString("password : "),LocalDate.parse(getString("date d'arrivée (yyyy-mm-dd) : ")),
-						LocalDate.parse(getString("date  (yyyy-mm-dd) : ")));
+					try {
+						ligue.addEmploye(getString("nom : "), 
+								getString("prenom : "), getString("mail : "), 
+								getString("password : "),LocalDate.parse(getString("date d'arrivée (yyyy-mm-dd) : ")),
+								LocalDate.parse(getString("date de départ (yyyy-mm-dd) : ")));
+						
+					} catch (Exception e) {
+						System.out.println(" \n Les dates d'arrivée et/ou de départ sont incohérentes ,reommencer s'il vous plait :");
+						
+					}
+					
 				}
 		);
 	}
@@ -111,8 +118,8 @@ public class LigueConsole
 		Menu menu = new Menu("Gérer les employés de " + ligue.getNom(), "e");
 		menu.add(afficherEmployes(ligue));
 		menu.add(ajouterEmploye(ligue));
-		menu.add(gererUnEmploye(ligue));
-		// j'ai remplacé les 3 options d'avant par "gererUnEmploye".
+		menu.add(modifierEmploye(ligue));
+		menu.add(supprimerEmploye(ligue));
 		menu.addBack("q");
 		return menu;
 	}
@@ -128,7 +135,7 @@ public class LigueConsole
 	private List<Employe> changerAdministrateur(final Ligue ligue)
 	{
 		return null;
-	}
+	}		
 
 	private List<Employe> modifierEmploye(final Ligue ligue)
 	{
@@ -143,21 +150,4 @@ public class LigueConsole
 		return new Option("Supprimer", "d", () -> {ligue.remove();});
 	}
 	
-	// Afficher une liste d'employés, puis pour l'employé sélectionné, afficher un menu permettant de modifier ou de supprimer l'employé.
-	private List<Employe> gererUnEmploye(final Ligue ligue)
-	{
-		return new List<>("Gérer un employé", "g",
-				() -> new ArrayList<>(ligue.getEmployes()),
-				(employe) -> {
-					Menu menu = new Menu("Gérer " + employe.getNom());
-					// option to edit (delegates to EmployeConsole)
-					menu.add(employeConsole.editerEmploye(employe));
-					// option to delete
-					menu.add(new Option("Supprimer l'employé", "s", () -> { employe.remove(); }));
-					menu.addBack("q");
-					return menu;
-				}
-				);
-	}
-
 }
