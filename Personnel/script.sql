@@ -15,4 +15,4 @@ CREATE TABLE EMPLOYE (
     num_ligue_administrer INT,
     
     CONSTRAINT fk_employe_appartenir FOREIGN KEY (num_ligue_appartenir) REFERENCES LIGUE(num_ligue),
-    CONSTRAINT fk_employe_administrer FOREIGN KEY (num_ligue_administrer) REFERENCES LIGUE(num_ligue));''g
+    CONSTRAINT fk_employe_administrer FOREIGN KEY (num_ligue_administrer) REFERENCES LIGUE(num_ligue));
