@@ -2,6 +2,7 @@ package commandLine;
 
 import static commandLineMenus.rendering.examples.util.InOut.getString;
 
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -104,9 +105,11 @@ public class LigueConsole
 								getString("password : "),LocalDate.parse(getString("date d'arrivée (yyyy-mm-dd) : ")),
 								LocalDate.parse(getString("date de départ (yyyy-mm-dd) : ")));
 						
-					} catch (Exception e) {
-						System.out.println(" \n Les dates d'arrivée et/ou de départ sont incohérentes ,reommencer s'il vous plait :");
+					} catch (DateIncoherenteException e) {
+						System.out.println("\n Les dates d'arrivée et/ou de départ sont incohérentes ,reommencer s'il vous plait :");
 						
+					}catch (java.time.format.DateTimeParseException e) {
+						System.out.println("\n Le format de la date est incohérente ,veuillez la tapez dans le format suivant : yyyy-mm-dd ");
 					}
 					
 				}
