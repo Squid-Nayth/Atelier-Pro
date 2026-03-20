@@ -43,7 +43,7 @@ Installé et lancer [Docker Desktop](https://www.docker.com/) sur votre ordinate
    ```bash
    docker compose up -d
    ```
-2. phpMyAdmin sera ccessible sur votre navigateur depuis l'adresse **http://localhost:8080**, connectez vous avec ces identifiants : **Utilisateur** : `root`, **mot de passe** : `rootpassword`.
+2. phpMyAdmin sera accessible sur votre navigateur depuis l'adresse **http://localhost:8080**, connectez vous avec ces identifiants : **Utilisateur** : `root`, **mot de passe** : `rootpassword`.
 
 ## Contribution
 
