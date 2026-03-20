@@ -39,21 +39,27 @@ Application Java en ligne de commande permettant la gestion des employés des li
 
 ### Lancer la base de données
 
-1. Copiez le fichier `docker/.env.example` en `docker/.env` et renseignez vos identifiants :
-   ```bash
-   cp docker/.env.example docker/.env
-   ```
-2. Dans votre terminal depuis le dossier `docker/`, lancer les conteneurs :
+1. Copiez le contenue du fichier `.env.example` dans le dossier `docker/` à la racine du projet puis créer un fichier `.env` dans ce même dossier et coller le contenue que vous avez collez précèdemment dans ce nouveau fichier, puis sauvegarder vos modifications.
+ 
+2. Copiez le contenue du fichier `CredentialsExample.java` qui se trouve dans le dossier `jdbc/` à la racine du projet puis créer un fichier `Crédentiales,java` dans ce même dossier et coller le contenue que vous avez collez précèdemment dans ce nouveau fichier, puis sauvegarder vos modifications.
+   
+4. Dans votre terminal depuis le dossier `docker/`, lancer les conteneurs :
    ```bash
    docker compose up -d
    ```
-3. phpMyAdmin est accessible sur **http://localhost:8080**, connectez vous avec **Utilisateur** : `root` et le mot de passe défini dans `MYSQL_ROOT_PASSWORD` de votre `.env`.
+6. phpMyAdmin est accessible sur **http://localhost:8080**, connectez vous avec **Utilisateur** : `root` et le mot de passe défini dans `MYSQL_ROOT_PASSWORD` de votre `.env`.
 
-### Configurer la connexion JDBC
+### Astuces
 
-1. Copiez `Personnel/src/jdbc/CredentialsExample.java` en `Credentials.java` dans le même dossier.
-2. Renseignez les champs `database`, `user` et `password` avec les valeurs de votre `.env`.
-3. Dans `Personnel/src/personnel/GestionPersonnel.java` ligne 25, remplacez `SERIALIZATION` par `JDBC`.
+- Rénitilialiser les conteneurs si il y a une erreur lors de l'execution du projet ou de la base de données.
+  ```bash
+   docker compose down -v
+   docker compose up -d
+   ```
+- Voir si les conteneurs ont été lancé.
+  ```bash
+   docker compose ps
+   ```
 
 ## Contribution
 
