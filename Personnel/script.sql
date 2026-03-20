@@ -1,9 +1,9 @@
-CREATE TABLE LIGUE (
+CREATE TABLE ligue (
     num_ligue INT PRIMARY KEY AUTO_INCREMENT,
     nom VARCHAR(100) NOT NULL);
 
 
-CREATE TABLE EMPLOYE (
+CREATE TABLE employe (
     Num_employe INT PRIMARY KEY AUTO_INCREMENT,
     Mail VARCHAR(100) NOT NULL,
     Nom VARCHAR(50) NOT NULL,
@@ -13,6 +13,6 @@ CREATE TABLE EMPLOYE (
     Date_depart DATE,
     num_ligue_appartenir INT,
     num_ligue_administrer INT,
-    
-    CONSTRAINT fk_employe_appartenir FOREIGN KEY (num_ligue_appartenir) REFERENCES LIGUE(num_ligue),
-    CONSTRAINT fk_employe_administrer FOREIGN KEY (num_ligue_administrer) REFERENCES LIGUE(num_ligue));
+
+    CONSTRAINT fk_employe_appartenir FOREIGN KEY (num_ligue_appartenir) REFERENCES ligue(num_ligue),
+    CONSTRAINT fk_employe_administrer FOREIGN KEY (num_ligue_administrer) REFERENCES ligue(num_ligue));

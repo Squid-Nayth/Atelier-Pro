@@ -35,15 +35,33 @@ Application Java en ligne de commande permettant la gestion des employés des li
 
 ### Prérequis
 
-Installé et lancer [Docker Desktop](https://www.docker.com/) sur votre ordinateur.
+* Installez et lancez [Docker Desktop](https://www.docker.com/).
 
 ### Lancer la base de données
 
-1. Dans votre terminal depuis le dossier `docker/` qui se trouve dans le répertoire du projet, lancer les conteneurs avec cette commande :
+1. Copiez le contenue du fichier `.env.example` qui est dans le dossier `docker/` puis créer un fichier `.env` dans ce même dossier et coller le contenue que vous avez copier précèdemment dans ce nouveau fichier, puis sauvegarder vos modifications.
+ 
+2. Copiez le contenue du fichier `CredentialsExample.java` qui se trouve dans le dossier `jdbc/` puis créer un fichier `Credentiales.java` dans ce même dossier et coller le contenue que vous avez copier précèdemment dans ce nouveau fichier, puis sauvegarder vos modifications.
+   
+3. Dans `Personnel/src/personnel/GestionPersonnel.java` ligne 25, remplacez `SERIALIZATION` par `JDBC`.
+
+4. Dans votre terminal depuis le dossier `docker/`, lancez les conteneurs :
    ```bash
    docker compose up -d
    ```
-2. phpMyAdmin sera accessible sur votre navigateur depuis l'adresse **http://localhost:8080**, connectez vous avec ces identifiants : **Utilisateur** : `root`, **mot de passe** : `rootpassword`.
+5. phpMyAdmin est accessible sur **http://localhost:8080**, connectez-vous avec **Utilisateur** : `root` et le mot de passe défini dans `MYSQL_ROOT_PASSWORD` de votre `.env`.
+
+### Astuces
+
+- Réinitialiser les conteneurs en cas d'erreur :
+  ```bash
+  docker compose down -v
+  docker compose up -d
+  ```
+- Vérifier si les conteneurs sont lancés :
+  ```bash
+  docker compose ps
+  ```
 
 ## Contribution
 
