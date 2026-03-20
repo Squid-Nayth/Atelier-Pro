@@ -39,9 +39,12 @@ Application Java en ligne de commande permettant la gestion des employés des li
 
 ### Lancer la base de données
 
-1. Copiez le fichier `docker/.env.example` en `docker/.env` et sauvegardez.
-2. Copiez le fichier `Personnel/src/jdbc/CredentialsExample.java` en `Credentials.java` dans le même dossier et sauvegardez.
+1. Copiez le contenue du fichier `.env.example` qui est dans le dossier `docker/` puis créer un fichier `.env` dans ce même dossier et coller le contenue que vous avez collez précèdemment dans ce nouveau fichier, puis sauvegarder vos modifications.
+ 
+2. Copiez le contenue du fichier `CredentialsExample.java` qui se trouve dans le dossier `jdbc/` puis créer un fichier `Credentiales.java` dans ce même dossier et coller le contenue que vous avez collez précèdemment dans ce nouveau fichier, puis sauvegarder vos modifications.
+   
 3. Dans `Personnel/src/personnel/GestionPersonnel.java` ligne 25, remplacez `SERIALIZATION` par `JDBC`.
+
 4. Dans votre terminal depuis le dossier `docker/`, lancez les conteneurs :
    ```bash
    docker compose up -d
