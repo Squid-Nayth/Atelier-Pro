@@ -35,15 +35,15 @@ Application Java en ligne de commande permettant la gestion des employés des li
 
 ### Prérequis
 
-*Installé et lancer **Docker Desktop** [https://www.docker.com/] .
+Installé et lancer **Docker Desktop** [https://www.docker.com/] .
 
 ### Lancer la base de données
 
-1. Dans votre terminal depuis le dossier `docker/`, lancer les conteneurs :
+1. Dans votre terminal depuis le dossier `docker/` qui se trouve dans le répertoire du projet, lancer les conteneurs avec cette commande :
    ```bash
    docker compose up -d
    ```
-2. phpMyAdmin est accessible sur **http://localhost:8080**, connectez vous avec ces identifiants : **Utilisateur** : `root`, **mot de passe** : `rootpassword`.
+2. phpMyAdmin sera ccessible sur votre navigateur depuis l'adresse **http://localhost:8080**, connectez vous avec ces identifiants : **Utilisateur** : `root`, **mot de passe** : `rootpassword`.
 
 ## Contribution
 
