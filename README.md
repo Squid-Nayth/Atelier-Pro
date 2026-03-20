@@ -35,31 +35,30 @@ Application Java en ligne de commande permettant la gestion des employés des li
 
 ### Prérequis
 
-*Installé et lancer **Docker Desktop** [https://www.docker.com/] .
+* Installez et lancez **Docker Desktop**.
 
 ### Lancer la base de données
 
-1. Copiez le contenue du fichier `.env.example` dans le dossier `docker/` à la racine du projet puis créer un fichier `.env` dans ce même dossier et coller le contenue que vous avez collez précèdemment dans ce nouveau fichier, puis sauvegarder vos modifications.
- 
-2. Copiez le contenue du fichier `CredentialsExample.java` qui se trouve dans le dossier `jdbc/` à la racine du projet puis créer un fichier `Crédentiales,java` dans ce même dossier et coller le contenue que vous avez collez précèdemment dans ce nouveau fichier, puis sauvegarder vos modifications.
-   
-4. Dans votre terminal depuis le dossier `docker/`, lancer les conteneurs :
+1. Copiez le fichier `docker/.env.example` en `docker/.env` et sauvegardez.
+2. Copiez le fichier `Personnel/src/jdbc/CredentialsExample.java` en `Credentials.java` dans le même dossier et sauvegardez.
+3. Dans `Personnel/src/personnel/GestionPersonnel.java` ligne 25, remplacez `SERIALIZATION` par `JDBC`.
+4. Dans votre terminal depuis le dossier `docker/`, lancez les conteneurs :
    ```bash
    docker compose up -d
    ```
-6. phpMyAdmin est accessible sur **http://localhost:8080**, connectez vous avec **Utilisateur** : `root` et le mot de passe défini dans `MYSQL_ROOT_PASSWORD` de votre `.env`.
+5. phpMyAdmin est accessible sur **http://localhost:8080**, connectez-vous avec **Utilisateur** : `root` et le mot de passe défini dans `MYSQL_ROOT_PASSWORD` de votre `.env`.
 
 ### Astuces
 
-- Rénitilialiser les conteneurs si il y a une erreur lors de l'execution du projet ou de la base de données.
+- Réinitialiser les conteneurs en cas d'erreur :
   ```bash
-   docker compose down -v
-   docker compose up -d
-   ```
-- Voir si les conteneurs ont été lancé.
+  docker compose down -v
+  docker compose up -d
+  ```
+- Vérifier si les conteneurs sont lancés :
   ```bash
-   docker compose ps
-   ```
+  docker compose ps
+  ```
 
 ## Contribution
 
