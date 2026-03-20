@@ -35,7 +35,7 @@ Application Java en ligne de commande permettant la gestion des employés des li
 
 ### Prérequis
 
-* Installez et lancez **Docker Desktop**.
+* Installez et lancez [Docker Desktop](https://www.docker.com/).
 
 ### Lancer la base de données
 
