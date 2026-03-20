@@ -1,0 +1,30 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: atelier_pro_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: atelier_pro
+      MYSQL_USER: atelier_user
+      MYSQL_PASSWORD: atelier_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ../Personnel/script.sql:/docker-entrypoint-initdb.d/script.sql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: atelier_pro_phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:

@@ -31,6 +31,20 @@ Application Java en ligne de commande permettant la gestion des employés des li
 
 **Si vous rencontrez des problèmes au niveau de l'importation du projet sur Eclipse, consultez la section "[Import](https://help.eclipse.org/latest/topic/org.eclipse.platform.doc.user/tasks/tasks-53.xhtml?cp=0_3_10)" de la documentation d'eclipse ou contactez l'un des contributeur du projet en créant un "Issue".** 
 
+## Base de données
+
+### Prérequis
+
+*Installé et lancer **Docker Desktop** [https://www.docker.com/] .
+
+### Lancer la base de données
+
+1. Dans votre terminal depuis le dossier `docker/`, lancer les conteneurs :
+   ```bash
+   docker compose up -d
+   ```
+2. phpMyAdmin est accessible sur **http://localhost:8080**, connectez vous avec ces identifiants : **Utilisateur** : `root`, **mot de passe** : `rootpassword`.
+
 ## Contribution
 
 Afin de contribuer correctement à ce dépot, veuillez vous referez au [Contributing.md](./Contributing.md), à la racine du dépôt, pour plus d’informations.
