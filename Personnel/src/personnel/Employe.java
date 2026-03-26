@@ -21,6 +21,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	// dates de l'employé (remplacent la classe personnel.LocalDate)
 	private LocalDate dateArrivee;
 	private LocalDate dateDepart;
+	private int id = -1;
 	
 	
 	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, String nom, String prenom, String mail, String password, java.time.LocalDate dateArrivee, java.time.LocalDate dateDepart )
@@ -35,6 +36,32 @@ public class Employe implements Serializable, Comparable<Employe>
 		setDateArrivee(dateArrivee);
 		setDateDepart(dateDepart);
 	}
+	
+	/**
+	 * Constructeur dédié à la création du root.
+	 * Modèle : surcharge du constructeur de Ligue effectuant une insertion en base.
+	 * Insère automatiquement le root dans la base de données lors de sa création.
+	 * @param gestionPersonnel le gestionnaire du personnel.
+	 * @param nom le nom du root.
+	 * @param password le password du root.
+	 * @throws SauvegardeImpossible si l'insertion en base échoue.
+	 */
+	Employe(GestionPersonnel gestionPersonnel, String nom, String password) throws SauvegardeImpossible
+	{
+	    this.gestionPersonnel = gestionPersonnel;
+	    this.nom = nom;
+	    // Le root n'a pas de prénom, mail, ni ligue
+	    this.prenom = "";
+	    this.mail = "";
+	    this.password = password;
+	    this.ligue = null;
+	    // Dates par défaut : aujourd'hui
+	    this.dateArrivee = java.time.LocalDate.now();
+	    this.dateDepart = java.time.LocalDate.now();
+	    // Insertion en base et récupération de l'id généré, comme pour Ligue
+	    this.id = gestionPersonnel.insert(this);
+	}
+	
 	
 	/**
 	 * Retourne vrai ssi l'employé est administrateur de la ligue 
@@ -88,6 +115,21 @@ public class Employe implements Serializable, Comparable<Employe>
 	public String getPrenom()
 	{
 		return prenom;
+	}
+	/**
+	 * Retourne l'identifiant de l'employé en base de données.
+	 * @return l'identifiant de l'employé.
+	 */
+	public int getId() {
+		return id;
+	}
+	/**
+	 * Retourne le password de l'employé.
+	 * Nécessaire pour l'insertion en base de données via JDBC.
+	 * @return le password de l'employé.
+	 */
+	public String getPassword() {
+		return password;
 	}
 	
 	/**
@@ -223,4 +265,6 @@ public class Employe implements Serializable, Comparable<Employe>
 			}
 			this.dateDepart = dateDepart;
 		}
+		
+		
 	}

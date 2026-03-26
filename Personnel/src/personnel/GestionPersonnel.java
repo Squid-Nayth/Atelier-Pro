@@ -20,7 +20,7 @@ public class GestionPersonnel implements Serializable
 	private static final long serialVersionUID = -105283113987886425L;
 	private static GestionPersonnel gestionPersonnel = null;
 	private SortedSet<Ligue> ligues;
-	private Employe root = new Employe(this, null, "root", "", "", "toor", java.time.LocalDate.now(), java.time.LocalDate.now());
+	private Employe root = null;
 	public final static int SERIALIZATION = 1, JDBC = 2,
 			TYPE_PASSERELLE = JDBC;
 	private static Passerelle passerelle = TYPE_PASSERELLE == JDBC ? new jdbc.JDBC() : new serialisation.Serialization();	
@@ -38,6 +38,13 @@ public class GestionPersonnel implements Serializable
 			gestionPersonnel = passerelle.getGestionPersonnel();
 			if (gestionPersonnel == null)
 				gestionPersonnel = new GestionPersonnel();
+			try {
+				// Création du root et insertion en base de données
+		        gestionPersonnel.addRoot("root", "toor");
+			}
+			catch(SauvegardeImpossible e) {
+				 System.err.println("Impossible d'insérer le root : " + e);
+			}
 		}
 		return gestionPersonnel;
 	}
@@ -102,6 +109,28 @@ public class GestionPersonnel implements Serializable
 	int insert(Ligue ligue) throws SauvegardeImpossible
 	{
 		return passerelle.insert(ligue);
+	}
+	
+	/**
+	 * Transmet l'ordre d'insertion d'un employé à la passerelle.
+	 * @throws SauvegardeImpossible si l'insertion échoue.
+	 */
+	int insert(Employe employe) throws SauvegardeImpossible
+	{
+	    return passerelle.insert(employe);
+	}
+
+	/**
+	 * Crée le root à partir de son nom et de son mot de passe,
+	 * puis l'affecte à la variable d'instance root.
+	 * Appelée uniquement au premier lancement de l'application,
+	 * quand aucune sauvegarde n'existe encore en base.
+	 * Utilise le constructeur dédié d'Employe qui insère le root en base.
+	 * @throws SauvegardeImpossible si l'insertion en base échoue.
+	 */
+	public void addRoot(String nom, String password) throws SauvegardeImpossible
+	{
+	    root = new Employe(this, nom, password);
 	}
 
 	/**

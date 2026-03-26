@@ -89,4 +89,44 @@ public class JDBC implements Passerelle
 			throw new SauvegardeImpossible(exception);
 		}		
 	}
+	/**
+	 * Insère un employé dans la base de données.
+	 * Modèle : méthode insert(Ligue ligue) de cette même classe.
+	 * @param employe l'employé à insérer.
+	 * @return l'identifiant généré par la base de données.
+	 * @throws SauvegardeImpossible si l'insertion échoue.
+	 */
+	@Override
+	public int insert(Employe employe) throws SauvegardeImpossible
+	{
+	    try
+	    {
+	        PreparedStatement instruction = connection.prepareStatement(
+	            "INSERT INTO employe (Mail, Nom, Prenom, Password, Date_arrivee, Date_depart, num_ligue_appartenir) VALUES (?, ?, ?, ?, ?, ?, ?)",
+	            Statement.RETURN_GENERATED_KEYS
+	        );
+	        instruction.setString(1, employe.getMail());
+	        instruction.setString(2, employe.getNom());
+	        instruction.setString(3, employe.getPrenom());
+	        instruction.setString(4, employe.getPassword());
+	        instruction.setDate(5, java.sql.Date.valueOf(employe.getDateArrivee()));
+	        instruction.setDate(6, java.sql.Date.valueOf(employe.getDateDepart()));
+	        // Si l'employé appartient à une ligue, on insère sa clé étrangère.
+	        // Sinon (cas du root), on insère NULL car il n'appartient à aucune ligue.
+	        if (employe.getLigue() != null)
+	            instruction.setInt(7, employe.getLigue().getId());
+	        else
+	            instruction.setNull(7, java.sql.Types.INTEGER);
+	        instruction.executeUpdate();
+	        // Récupération de l'identifiant auto-généré par la base de données
+	        ResultSet id = instruction.getGeneratedKeys();
+	        id.next();
+	        return id.getInt(1);
+	    }
+	    catch (SQLException exception)
+	    {
+	        exception.printStackTrace();
+	        throw new SauvegardeImpossible(exception);
+	    }
+	}
 }
