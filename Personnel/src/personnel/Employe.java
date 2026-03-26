@@ -80,6 +80,21 @@ public class Employe implements Serializable, Comparable<Employe>
 	    // Pas d'insertion en base : le root existe déjà
 	}
 	
+	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, int id, String nom, String prenom, String mail, String password, java.time.LocalDate dateArrivee, java.time.LocalDate dateDepart)
+	{
+	    this.gestionPersonnel = gestionPersonnel;
+	    this.ligue = ligue;
+	    this.id = id;
+	    this.nom = nom;
+	    this.prenom = prenom;
+	    this.mail = mail;
+	    this.password = password;
+	    // Dates lues directement depuis la base, pas de validation nécessaire
+	    this.dateArrivee = dateArrivee;
+	    this.dateDepart = dateDepart;
+	    // Pas d'insertion en base : l'employé existe déjà
+	}
+	
 	
 	/**
 	 * Retourne vrai ssi l'employé est administrateur de la ligue 

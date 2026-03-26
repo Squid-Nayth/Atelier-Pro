@@ -125,6 +125,27 @@ public class Ligue implements Serializable, Comparable<Ligue>
 		employes.add(employe);
 		return employe;
 	}
+	
+	/**
+	 * Instancie un employé à partir de données lues dans la base de données
+	 * et l'ajoute à la liste des employés de la ligue.
+	 * une ligue existante sans insertion en base.
+	 * @param id l'identifiant de l'employé lu en base.
+	 * @param nom le nom de l'employé lu en base.
+	 * @param prenom le prénom de l'employé lu en base.
+	 * @param mail le mail de l'employé lu en base.
+	 * @param password le password de l'employé lu en base.
+	 * @param dateArrivee la date d'arrivée lue en base.
+	 * @param dateDepart la date de départ lue en base.
+	 * @return l'employé instancié.
+	 */
+	public Employe addEmploye(int id, String nom, String prenom, String mail, String password, java.time.LocalDate dateArrivee, java.time.LocalDate dateDepart)
+	{
+	    // Utilise le constructeur sans insertion car l'employé existe déjà en base
+	    Employe employe = new Employe(this.gestionPersonnel, this, id, nom, prenom, mail, password, dateArrivee, dateDepart);
+	    employes.add(employe);
+	    return employe;
+	}
 
 	/**
 	 * Surcharge utile pour l'interface console : crée un employé sans dates

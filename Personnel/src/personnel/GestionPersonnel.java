@@ -76,6 +76,20 @@ public class GestionPersonnel implements Serializable
 		else
 			return null;
 	}
+	/**
+	 * Retourne la ligue dont l'identifiant est passé en paramètre.
+	 * Nécessaire pour retrouver la ligue d'un employé lors du chargement
+	 * depuis la base de données via la requête avec jointure.
+	 * @param id l'identifiant de la ligue recherchée.
+	 * @return la ligue correspondante, null si non trouvée.
+	 */
+	public Ligue getLigue(int id)
+	{
+	    for (Ligue ligue : ligues)
+	        if (ligue.getId() == id)
+	            return ligue;
+	    return null;
+	}
 
 	/**
 	 * Retourne toutes les ligues enregistrées.

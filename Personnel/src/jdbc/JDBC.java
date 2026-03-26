@@ -33,33 +33,64 @@ public class JDBC implements Passerelle
 	}
 	
 	@Override
-	public GestionPersonnel getGestionPersonnel() 
+	public GestionPersonnel getGestionPersonnel()
 	{
-		GestionPersonnel gestionPersonnel = new GestionPersonnel();
-		try 
-		{
-			String requete = "select * from ligue";
-			Statement instruction = connection.createStatement();
-			ResultSet ligues = instruction.executeQuery(requete);
-			while (ligues.next())
-				gestionPersonnel.addLigue(ligues.getInt(1), ligues.getString(2));
-			
-			 String requeteRoot = "select Num_employe, Nom, Password from employe where num_ligue_appartenir IS NULL";
-		        ResultSet rootResult = instruction.executeQuery(requeteRoot);
-		        if (rootResult.next())
-		        {
-		        	 gestionPersonnel.addRoot(
-		                     rootResult.getInt("Num_employe"),
-		                     rootResult.getString("Nom"),
-		                     rootResult.getString("Password")
-		                 );
-		        }
-		}
-		catch (SQLException e)
-		{
-			System.out.println(e);
-		}
-		return gestionPersonnel;
+	    GestionPersonnel gestionPersonnel = new GestionPersonnel();
+	    try
+	    {
+	        // Chargement de toutes les ligues existantes en base
+	        String requete = "select * from ligue";
+	        Statement instruction = connection.createStatement();
+	        ResultSet ligues = instruction.executeQuery(requete);
+	        while (ligues.next())
+	            gestionPersonnel.addLigue(ligues.getInt("num_ligue"), ligues.getString("nom"));
+
+	        // Requête avec jointure pour charger tous les employés
+	        // et leur ligue associée en une seule requête
+	        String requeteEmployes =
+	            "SELECT e.Num_employe, e.Nom, e.Prenom, e.Mail, e.Password, " +
+	            "e.Date_arrivee, e.Date_depart, e.num_ligue_appartenir " +
+	            "FROM employe e " +
+	            "JOIN ligue l ON e.num_ligue_appartenir = l.num_ligue " +
+	            "WHERE e.num_ligue_appartenir IS NOT NULL";
+
+	        ResultSet employes = instruction.executeQuery(requeteEmployes);
+	        while (employes.next())
+	        {
+	            // Récupération de la ligue correspondante déjà chargée en mémoire
+	            Ligue ligue = gestionPersonnel.getLigue(employes.getInt("num_ligue_appartenir"));
+
+	            // Création de l'objet Employé à partir des données lues en base
+	            ligue.addEmploye(
+	                employes.getInt("Num_employe"),
+	                employes.getString("Nom"),
+	                employes.getString("Prenom"),
+	                employes.getString("Mail"),
+	                employes.getString("Password"),
+	                employes.getDate("Date_arrivee").toLocalDate(),
+	                employes.getDate("Date_depart").toLocalDate()
+	            );
+	        }
+
+	        // Chargement du root depuis la base
+	        // Le root est identifié par l'absence de ligue (num_ligue_appartenir IS NULL)
+	        String requeteRoot =
+	            "SELECT Num_employe, Nom, Password FROM employe " +
+	            "WHERE num_ligue_appartenir IS NULL";
+	        ResultSet rootResult = instruction.executeQuery(requeteRoot);
+	        if (rootResult.next())
+	            // Le root existe déjà en base : on l'instancie sans le réinsérer
+	            gestionPersonnel.addRoot(
+	                rootResult.getInt("Num_employe"),
+	                rootResult.getString("Nom"),
+	                rootResult.getString("Password")
+	            );
+	    }
+	    catch (SQLException e)
+	    {
+	        System.out.println(e);
+	    }
+	    return gestionPersonnel;
 	}
 
 	@Override
