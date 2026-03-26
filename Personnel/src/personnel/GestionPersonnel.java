@@ -132,6 +132,20 @@ public class GestionPersonnel implements Serializable
 	{
 	    root = new Employe(this, nom, password);
 	}
+	
+	/**
+	 * Crée le root à partir de données lues dans la base de données
+	 * et l'affecte à la variable d'instance root.
+	 * Utilisée au chargement de l'application quand le root existe déjà en base.
+	 * @param id l'identifiant du root lu en base.
+	 * @param nom le nom du root lu en base.
+	 * @param password le password du root lu en base.
+	 */
+	public void addRoot(int id, String nom, String password)
+	{
+	    // Utilise le constructeur sans insertion car le root existe déjà en base
+	    root = new Employe(this, id, nom, password);
+	}
 
 	/**
 	 * Retourne le root (super-utilisateur).

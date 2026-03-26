@@ -43,6 +43,17 @@ public class JDBC implements Passerelle
 			ResultSet ligues = instruction.executeQuery(requete);
 			while (ligues.next())
 				gestionPersonnel.addLigue(ligues.getInt(1), ligues.getString(2));
+			
+			 String requeteRoot = "select Num_employe, Nom, Password from employe where num_ligue_appartenir IS NULL";
+		        ResultSet rootResult = instruction.executeQuery(requeteRoot);
+		        if (rootResult.next())
+		        {
+		        	 gestionPersonnel.addRoot(
+		                     rootResult.getInt("Num_employe"),
+		                     rootResult.getString("Nom"),
+		                     rootResult.getString("Password")
+		                 );
+		        }
 		}
 		catch (SQLException e)
 		{

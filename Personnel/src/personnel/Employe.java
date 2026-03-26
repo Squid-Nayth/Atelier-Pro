@@ -50,7 +50,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	{
 	    this.gestionPersonnel = gestionPersonnel;
 	    this.nom = nom;
-	    // Le root n'a pas de prénom, mail, ni ligue
+	    // Le root n'a pas de prénom, mail, ni de ligue
 	    this.prenom = "";
 	    this.mail = "";
 	    this.password = password;
@@ -60,6 +60,24 @@ public class Employe implements Serializable, Comparable<Employe>
 	    this.dateDepart = java.time.LocalDate.now();
 	    // Insertion en base et récupération de l'id généré, comme pour Ligue
 	    this.id = gestionPersonnel.insert(this);
+	}
+	
+	
+	
+	Employe(GestionPersonnel gestionPersonnel, int id, String nom, String password)
+	{
+	    this.gestionPersonnel = gestionPersonnel;
+	    this.id = id;
+	    this.nom = nom;
+	    // Le root n'a pas de prénom, de mail, ni de ligue
+	    this.prenom = "";
+	    this.mail = "";
+	    this.password = password;
+	    this.ligue = null;
+	    // Dates initialisées à aujourd'hui par défaut
+	    this.dateArrivee = java.time.LocalDate.now();
+	    this.dateDepart = java.time.LocalDate.now();
+	    // Pas d'insertion en base : le root existe déjà
 	}
 	
 	
