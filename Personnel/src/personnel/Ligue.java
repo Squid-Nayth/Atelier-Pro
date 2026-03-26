@@ -119,7 +119,7 @@ public class Ligue implements Serializable, Comparable<Ligue>
 	 * @return l'employé créé. 
 	 */
 
-	public Employe addEmploye(String nom, String prenom, String mail, String password, java.time.LocalDate dateArrivee, java.time.LocalDate dateDepart)
+	public Employe addEmploye(String nom, String prenom, String mail, String password, java.time.LocalDate dateArrivee, java.time.LocalDate dateDepart)throws SauvegardeImpossible
 	{
 		Employe employe = new Employe(this.gestionPersonnel, this, nom, prenom, mail, password, dateArrivee, dateDepart);
 		employes.add(employe);
@@ -151,7 +151,7 @@ public class Ligue implements Serializable, Comparable<Ligue>
 	 * Surcharge utile pour l'interface console : crée un employé sans dates
 	 * (utilise des dates par défaut : aujourd'hui et aujourd'hui).
 	 */
-	public Employe addEmploye(String nom, String prenom, String mail, String password)
+	public Employe addEmploye(String nom, String prenom, String mail, String password)throws SauvegardeImpossible
 	{
 		java.time.LocalDate today = java.time.LocalDate.now();
 		return addEmploye(nom, prenom, mail, password, today, today);

@@ -24,7 +24,12 @@ public class Employe implements Serializable, Comparable<Employe>
 	private int id = -1;
 	
 	
-	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, String nom, String prenom, String mail, String password, java.time.LocalDate dateArrivee, java.time.LocalDate dateDepart )
+	
+	/**
+	 * Constructeur pour créer un nouvel employé et l'insérer en base.
+	 * @throws SauvegardeImpossible si l'insertion en base échoue.
+	 */
+	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, String nom, String prenom, String mail, String password, java.time.LocalDate dateArrivee, java.time.LocalDate dateDepart )throws SauvegardeImpossible
 	{
 		this.gestionPersonnel = gestionPersonnel;
 		this.nom = nom;
@@ -35,6 +40,7 @@ public class Employe implements Serializable, Comparable<Employe>
 		// validation des dates
 		setDateArrivee(dateArrivee);
 		setDateDepart(dateDepart);
+		this.id = gestionPersonnel.insert(this);
 	}
 	
 	/**

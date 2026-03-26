@@ -132,8 +132,9 @@ public class JDBC implements Passerelle
 		}		
 	}
 	/**
-	 * Insère un employé dans la base de données.
-	 * Modèle : méthode insert(Ligue ligue) de cette même classe.
+	 * Insère un employé en base de données.
+	 * Utilise un SELECT avec jointure sur la table ligue pour récupérer
+	 * num_ligue_appartenir directement depuis la table ligue via son id.
 	 * @param employe l'employé à insérer.
 	 * @return l'identifiant généré par la base de données.
 	 * @throws SauvegardeImpossible si l'insertion échoue.
@@ -143,8 +144,12 @@ public class JDBC implements Passerelle
 	{
 	    try
 	    {
+	       
+	        // on remplace VALUES (?, ?, ?, ?, ?, ?, ?) par un SELECT avec JOIN
+	        // sur la table ligue pour récupérer num_ligue directement en base
 	        PreparedStatement instruction = connection.prepareStatement(
-	            "INSERT INTO employe (Mail, Nom, Prenom, Password, Date_arrivee, Date_depart, num_ligue_appartenir) VALUES (?, ?, ?, ?, ?, ?, ?)",
+	            "INSERT INTO employe (Mail, Nom, Prenom, Password, Date_arrivee, Date_depart, num_ligue_appartenir) " +
+	            "SELECT ?, ?, ?, ?, ?, ?, num_ligue FROM ligue WHERE num_ligue = ?",
 	            Statement.RETURN_GENERATED_KEYS
 	        );
 	        instruction.setString(1, employe.getMail());
@@ -153,8 +158,8 @@ public class JDBC implements Passerelle
 	        instruction.setString(4, employe.getPassword());
 	        instruction.setDate(5, java.sql.Date.valueOf(employe.getDateArrivee()));
 	        instruction.setDate(6, java.sql.Date.valueOf(employe.getDateDepart()));
-	        // Si l'employé appartient à une ligue, on insère sa clé étrangère.
-	        // Sinon (cas du root), on insère NULL car il n'appartient à aucune ligue.
+	        // Jointure avec la ligue : récupération de num_ligue depuis la table ligue
+	        // Si root (pas de ligue), on insère NULL
 	        if (employe.getLigue() != null)
 	            instruction.setInt(7, employe.getLigue().getId());
 	        else
