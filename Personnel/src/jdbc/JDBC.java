@@ -201,9 +201,7 @@ public class JDBC implements Passerelle
 	{
 	    try
 	    {
-	       
-	        // on remplace VALUES (?, ?, ?, ?, ?, ?, ?) par un SELECT avec JOIN
-	        // sur la table ligue pour récupérer num_ligue directement en base
+
 	        PreparedStatement instruction = connection.prepareStatement(
 	            "UPDATE employe set Mail = ? , Nom = ? , Prenom = ? , Password = ? , Date_arrivee = ? , Date_depart = ? , num_ligue_appartenir = ? where id = ? "
 	        );
@@ -218,11 +216,13 @@ public class JDBC implements Passerelle
 	        else
 	            instruction.setNull(7, java.sql.Types.INTEGER);
 	        instruction.executeUpdate();
+	        instruction.setInt(8, employe.getId());
 	    }
 	    catch (SQLException exception)
 	    {
 	        exception.printStackTrace();
 	        throw new SauvegardeImpossible(exception);
-	    }
+	    } 
 	}
+	
 }
