@@ -267,9 +267,30 @@ public class JDBC implements Passerelle
 	    }
 	}
 	
+	
 	@Override
 	public void update(Employe employe) throws SauvegardeImpossible
 	{
+		
+		if(employe.estRoot()) {
+			try
+		    {
+
+		        PreparedStatement instruction = connection.prepareStatement(
+		            "UPDATE employe set Nom = ? , Prenom = ? , Password = ?  where Num_employe = ? "
+		        );
+		        instruction.setString(1, employe.getNom());
+		        instruction.setString(2, employe.getPrenom());
+		        instruction.setString(3, employe.getPassword());
+		        instruction.executeUpdate();
+		        instruction.setInt(4, employe.getId());
+		    }
+		    catch (SQLException exception)
+		    {
+		        exception.printStackTrace();
+		        throw new SauvegardeImpossible(exception);
+		    } 
+		}else {
 	    try
 	    {
 
@@ -294,6 +315,8 @@ public class JDBC implements Passerelle
 	        exception.printStackTrace();
 	        throw new SauvegardeImpossible(exception);
 	    } 
+	}
+	
 	}
 	
 }
