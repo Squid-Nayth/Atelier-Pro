@@ -45,7 +45,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	
 	/**
 	 * Constructeur dédié à la création du root.
-	 * Modèle : surcharge du constructeur de Ligue effectuant une insertion en base.
+	 *surcharge du constructeur de Ligue effectuant une insertion en base.
 	 * Insère automatiquement le root dans la base de données lors de sa création.
 	 * @param gestionPersonnel le gestionnaire du personnel.
 	 * @param nom le nom du root.
@@ -54,18 +54,10 @@ public class Employe implements Serializable, Comparable<Employe>
 	 */
 	Employe(GestionPersonnel gestionPersonnel, String nom, String password) throws SauvegardeImpossible
 	{
-	    this.gestionPersonnel = gestionPersonnel;
-	    this.nom = nom;
-	    // Le root n'a pas de prénom, mail, ni de ligue
-	    this.prenom = "";
-	    this.mail = "";
-	    this.password = password;
-	    this.ligue = null;
-	    // Dates par défaut : aujourd'hui
-	    this.dateArrivee = java.time.LocalDate.now();
-	    this.dateDepart = java.time.LocalDate.now();
-	    // Insertion en base et récupération de l'id généré, comme pour Ligue
-	    this.id = gestionPersonnel.insert(this);
+		// Appel de la surcharge sans insertion pour initialiser les champs,
+		this(gestionPersonnel, -1, nom, password); 
+		 // Insertion en base et récupération de l'id généré après initialisation
+	    this.id = gestionPersonnel.insert(this);  
 	}
 	
 	
