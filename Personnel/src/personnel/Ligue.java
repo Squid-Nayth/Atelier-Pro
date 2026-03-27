@@ -180,9 +180,9 @@ public class Ligue implements Serializable, Comparable<Ligue>
 	 * de la ligue.
 	 */
 	
-	public void remove()
+	public void remove() throws SauvegardeImpossible
 	{
-		gestionPersonnel.remove(this);
+		gestionPersonnel.delete(this);
 	}
 	
 
