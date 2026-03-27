@@ -139,11 +139,13 @@ public class Employe implements Serializable, Comparable<Employe>
 	/**
 	 * Change le nom de l'employé.
 	 * @param nom le nouveau nom.
+	 * @throws SauvegardeImpossible 
 	 */
 	
-	public void setNom(String nom)
+	public void setNom(String nom) throws SauvegardeImpossible
 	{
 		this.nom = nom;
+		gestionPersonnel.update(this);
 	}
 
 	/**
@@ -154,6 +156,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	public String getPrenom()
 	{
 		return prenom;
+		
 	}
 	/**
 	 * Retourne l'identifiant de l'employé en base de données.
@@ -174,11 +177,13 @@ public class Employe implements Serializable, Comparable<Employe>
 	/**
 	 * Change le prénom de l'employé.
 	 * @param prenom le nouveau prénom de l'employé. 
+	 * @throws SauvegardeImpossible 
 	 */
 
-	public void setPrenom(String prenom)
+	public void setPrenom(String prenom) throws SauvegardeImpossible
 	{
 		this.prenom = prenom;
+		gestionPersonnel.update(this);
 	}
 
 	/**
@@ -194,11 +199,13 @@ public class Employe implements Serializable, Comparable<Employe>
 	/**
 	 * Change le mail de l'employé.
 	 * @param mail le nouveau mail de l'employé.
+	 * @throws SauvegardeImpossible 
 	 */
 
-	public void setMail(String mail)
+	public void setMail(String mail) throws SauvegardeImpossible
 	{
 		this.mail = mail;
+		gestionPersonnel.update(this);
 	}
 
 	/**
@@ -217,11 +224,13 @@ public class Employe implements Serializable, Comparable<Employe>
 	/**
 	 * Change le password de l'employé.
 	 * @param password le nouveau password de l'employé. 
+	 * @throws SauvegardeImpossible 
 	 */
 	
-	public void setPassword(String password)
+	public void setPassword(String password) throws SauvegardeImpossible
 	{
 		this.password= password;
+		gestionPersonnel.update(this);
 	}
 
 	/**
@@ -285,7 +294,7 @@ public class Employe implements Serializable, Comparable<Employe>
 			return dateDepart;
 		}
 
-		public void setDateArrivee(LocalDate dateArrivee) throws DateIncoherenteException {
+		public void setDateArrivee(LocalDate dateArrivee) throws DateIncoherenteException, SauvegardeImpossible {
 			if(dateArrivee == null) {
 				throw new DateIncoherenteException("La date d'arrivée ne peut être null");
 			}
@@ -293,9 +302,10 @@ public class Employe implements Serializable, Comparable<Employe>
 				throw new DateIncoherenteException("La nouvelle date d'arrivée (" + dateArrivee + ") ne peut pas être postérieure à la date de départ (" + this.dateDepart + ")");
 			}
 			this.dateArrivee = dateArrivee;
+			gestionPersonnel.update(this);
 		}
 		
-		public void setDateDepart(LocalDate dateDepart) throws DateIncoherenteException {
+		public void setDateDepart(LocalDate dateDepart) throws DateIncoherenteException, SauvegardeImpossible {
 			if(dateDepart == null) {
 				throw new DateIncoherenteException("La date de départ ne peut être null");
 			}
@@ -303,6 +313,7 @@ public class Employe implements Serializable, Comparable<Employe>
 				throw new DateIncoherenteException("La nouvelle date de départ (" + dateDepart + ") ne peut pas être antérieure à la date d'arrivée (" + this.dateArrivee + ")");
 			}
 			this.dateDepart = dateDepart;
+			gestionPersonnel.update(this);
 		}
 		
 		
