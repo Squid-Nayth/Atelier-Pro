@@ -52,7 +52,6 @@ public class JDBC implements Passerelle
 	            "SELECT e.Num_employe, e.Nom, e.Prenom, e.Mail, e.Password, " +
 	            "e.Date_arrivee, e.Date_depart, e.num_ligue_appartenir " +
 	            "FROM employe e " +
-	            "JOIN ligue l ON e.num_ligue_appartenir = l.num_ligue " +
 	            "WHERE e.num_ligue_appartenir IS NOT NULL";
 
 	        ResultSet employes = instruction.executeQuery(requeteEmployes);
