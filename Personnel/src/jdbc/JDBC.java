@@ -212,6 +212,23 @@ public class JDBC implements Passerelle
 	 * @return l'identifiant généré par la base de données.
 	 * @throws SauvegardeImpossible si l'insertion échoue.
 	 */
+	
+	@Override
+	public void delete(Employe employe) throws SauvegardeImpossible
+	{
+		try
+		{
+			PreparedStatement supprimerLigue = connection.prepareStatement(
+				"DELETE FROM employe WHERE Num_employe = ?");
+			supprimerLigue.setInt(1, employe.getId());
+			supprimerLigue.executeUpdate();
+		}
+		catch (SQLException exception)
+		{
+			exception.printStackTrace();
+			throw new SauvegardeImpossible(exception);
+		}
+	}
 	@Override
 	public int insert(Employe employe) throws SauvegardeImpossible
 	{
@@ -257,7 +274,7 @@ public class JDBC implements Passerelle
 	    {
 
 	        PreparedStatement instruction = connection.prepareStatement(
-	            "UPDATE employe set Mail = ? , Nom = ? , Prenom = ? , Password = ? , Date_arrivee = ? , Date_depart = ? , num_ligue_appartenir = ? where id = ? "
+	            "UPDATE employe set Mail = ? , Nom = ? , Prenom = ? , Password = ? , Date_arrivee = ? , Date_depart = ? , num_ligue_appartenir = ? where Num_employe = ? "
 	        );
 	        instruction.setString(1, employe.getMail());
 	        instruction.setString(2, employe.getNom());
