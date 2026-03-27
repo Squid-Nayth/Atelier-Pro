@@ -73,7 +73,26 @@ public class JDBC implements Passerelle
 	            );
 	        }
 
-	        // Chargement du root depuis la base
+	        // Chargement des administrateurs de ligue
+        String requeteAdmins =
+            "SELECT Num_employe, num_ligue_administrer FROM employe " +
+            "WHERE num_ligue_administrer IS NOT NULL";
+        ResultSet admins = instruction.executeQuery(requeteAdmins);
+        while (admins.next())
+        {
+            int numLigue = admins.getInt("num_ligue_administrer");
+            int numEmploye = admins.getInt("Num_employe");
+            Ligue ligue = gestionPersonnel.getLigue(numLigue);
+            if (ligue != null)
+                for (Employe emp : ligue.getEmployes())
+                    if (emp.getId() == numEmploye)
+                    {
+                        ligue.setAdministrateurSansSauvegarde(emp);
+                        break;
+                    }
+        }
+
+        // Chargement du root depuis la base
 	        // Le root est identifié par l'absence de ligue (num_ligue_appartenir IS NULL)
 	        String requeteRoot =
 	            "SELECT Num_employe, Nom, Password FROM employe " +
@@ -134,21 +153,39 @@ public class JDBC implements Passerelle
 	}
 	
 	@Override
-	public void update(Ligue ligue) throws SauvegardeImpossible 
+	public void update(Ligue ligue) throws SauvegardeImpossible
 	{
-		try 
+		try
 		{
-			PreparedStatement instruction;
-			instruction = connection.prepareStatement("update ligue set nom = ? where id = ?");
-			instruction.setString(1, ligue.getNom());	
+			// Mise à jour du nom de la ligue
+			PreparedStatement instruction = connection.prepareStatement(
+				"UPDATE ligue SET nom = ? WHERE num_ligue = ?");
+			instruction.setString(1, ligue.getNom());
 			instruction.setInt(2, ligue.getId());
 			instruction.executeUpdate();
-		} 
-		catch (SQLException exception) 
+
+			// Réinitialisation de l'ancien administrateur de cette ligue
+			PreparedStatement clearAdmin = connection.prepareStatement(
+				"UPDATE employe SET num_ligue_administrer = NULL WHERE num_ligue_administrer = ?");
+			clearAdmin.setInt(1, ligue.getId());
+			clearAdmin.executeUpdate();
+
+			// Assignation du nouvel administrateur (sauf si c'est le root)
+			Employe admin = ligue.getAdministrateur();
+			if (!admin.estRoot())
+			{
+				PreparedStatement setAdmin = connection.prepareStatement(
+					"UPDATE employe SET num_ligue_administrer = ? WHERE Num_employe = ?");
+				setAdmin.setInt(1, ligue.getId());
+				setAdmin.setInt(2, admin.getId());
+				setAdmin.executeUpdate();
+			}
+		}
+		catch (SQLException exception)
 		{
 			exception.printStackTrace();
 			throw new SauvegardeImpossible(exception);
-		}		
+		}
 	}
 	/**
 	 * Insère un employé en base de données.
@@ -201,9 +238,7 @@ public class JDBC implements Passerelle
 	{
 	    try
 	    {
-	       
-	        // on remplace VALUES (?, ?, ?, ?, ?, ?, ?) par un SELECT avec JOIN
-	        // sur la table ligue pour récupérer num_ligue directement en base
+
 	        PreparedStatement instruction = connection.prepareStatement(
 	            "UPDATE employe set Mail = ? , Nom = ? , Prenom = ? , Password = ? , Date_arrivee = ? , Date_depart = ? , num_ligue_appartenir = ? where id = ? "
 	        );
@@ -218,11 +253,13 @@ public class JDBC implements Passerelle
 	        else
 	            instruction.setNull(7, java.sql.Types.INTEGER);
 	        instruction.executeUpdate();
+	        instruction.setInt(8, employe.getId());
 	    }
 	    catch (SQLException exception)
 	    {
 	        exception.printStackTrace();
 	        throw new SauvegardeImpossible(exception);
-	    }
+	    } 
 	}
+	
 }

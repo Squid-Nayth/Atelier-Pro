@@ -153,9 +153,13 @@ public class LigueConsole
 		return new List <>("Changer l'administrateur" , "c",
 				() -> new ArrayList <>(ligue.getEmployes()),
 				(index, element) -> {
-					ligue.setAdministrateur(element);
-					System.out.println(element.getPrenom() + " " + element.getNom() +
-							"est le nouvel administratuer de " + ligue.getNom());
+					try {
+						ligue.setAdministrateur(element);
+						System.out.println(element.getPrenom() + " " + element.getNom() +
+								" est le nouvel administrateur de " + ligue.getNom());
+					} catch (SauvegardeImpossible e) {
+						System.err.println("Impossible de sauvegarder le changement d'administrateur.");
+					}
 				});
 	}		
 

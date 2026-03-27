@@ -240,7 +240,8 @@ public class Employe implements Serializable, Comparable<Employe>
 		if (this != root)
 		{
 			if (estAdmin(getLigue()))
-				getLigue().setAdministrateur(root);
+				try { getLigue().setAdministrateur(root); }
+				catch (SauvegardeImpossible e) { throw new RuntimeException(e); }
 			getLigue().remove(this);
 		}
 		else
