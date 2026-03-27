@@ -45,7 +45,6 @@ public class Employe implements Serializable, Comparable<Employe>
 	
 	/**
 	 * Constructeur dédié à la création du root.
-	 *surcharge du constructeur de Ligue effectuant une insertion en base.
 	 * Insère automatiquement le root dans la base de données lors de sa création.
 	 * @param gestionPersonnel le gestionnaire du personnel.
 	 * @param nom le nom du root.
@@ -56,7 +55,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	{
 		// Appel de la surcharge sans insertion pour initialiser les champs,
 		this(gestionPersonnel, -1, nom, password); 
-		 // Insertion en base et récupération de l'id généré après initialisation
+		// Insertion en base et récupération de l'id généré après initialisation
 	    this.id = gestionPersonnel.insert(this);  
 	}
 	
@@ -64,18 +63,10 @@ public class Employe implements Serializable, Comparable<Employe>
 	
 	Employe(GestionPersonnel gestionPersonnel, int id, String nom, String password)
 	{
-	    this.gestionPersonnel = gestionPersonnel;
-	    this.id = id;
-	    this.nom = nom;
-	    // Le root n'a pas de prénom, de mail, ni de ligue
-	    this.prenom = "";
-	    this.mail = "";
-	    this.password = password;
-	    this.ligue = null;
-	    // Dates initialisées à aujourd'hui par défaut
-	    this.dateArrivee = java.time.LocalDate.now();
-	    this.dateDepart = java.time.LocalDate.now();
-	    // Pas d'insertion en base : le root existe déjà
+		// Relais vers le constructeur complet sans insertion
+	    // Le root n'a pas de ligue, prénom, ni mail.
+	    this(gestionPersonnel, null, id, nom, "", "", password,
+	         java.time.LocalDate.now(), java.time.LocalDate.now());
 	}
 	
 	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, int id, String nom, String prenom, String mail, String password, java.time.LocalDate dateArrivee, java.time.LocalDate dateDepart)
