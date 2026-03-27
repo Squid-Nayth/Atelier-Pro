@@ -13,4 +13,6 @@ public interface Passerelle
 	 * @throws SauvegardeImpossible si l'insertion échoue.
 	 */
 	public int insert(Employe employe) throws SauvegardeImpossible;
+	
+	public void update(Ligue ligue) throws SauvegardeImpossible;
 }

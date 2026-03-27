@@ -1,5 +1,6 @@
 package jdbc;
 
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
@@ -124,6 +125,24 @@ public class JDBC implements Passerelle
 			ResultSet id = instruction.getGeneratedKeys();
 			id.next();
 			return id.getInt(1);
+		} 
+		catch (SQLException exception) 
+		{
+			exception.printStackTrace();
+			throw new SauvegardeImpossible(exception);
+		}		
+	}
+	
+	@Override
+	public void update(Ligue ligue) throws SauvegardeImpossible 
+	{
+		try 
+		{
+			PreparedStatement instruction;
+			instruction = connection.prepareStatement("update ligue set nom = ? where id = ?");
+			instruction.setString(1, ligue.getNom());	
+			instruction.setInt(2, ligue.getId());
+			instruction.executeUpdate();
 		} 
 		catch (SQLException exception) 
 		{

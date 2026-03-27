@@ -125,6 +125,11 @@ public class GestionPersonnel implements Serializable
 		return passerelle.insert(ligue);
 	}
 	
+	int update(Ligue ligue) throws SauvegardeImpossible
+	{
+		return passerelle.update(ligue);
+	}
+	
 	/**
 	 * Transmet l'ordre d'insertion d'un employé à la passerelle.
 	 * @throws SauvegardeImpossible si l'insertion échoue.

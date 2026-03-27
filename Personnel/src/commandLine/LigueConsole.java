@@ -83,7 +83,11 @@ public class LigueConsole
 	private Option changerNom(final Ligue ligue)
 	{
 		return new Option("Renommer", "r", 
-				() -> {ligue.setNom(getString("Nouveau nom : "));});
+				() -> {try {
+					ligue.setNom(getString("Nouveau nom : "));
+				} catch (SauvegardeImpossible e) {
+					e.printStackTrace();
+				}});
 	}
 
 	private List<Ligue> selectionnerLigue()
@@ -110,6 +114,8 @@ public class LigueConsole
 						
 					}catch (java.time.format.DateTimeParseException e) {
 						System.out.println("\n Le format de la date est incohérente ,veuillez la tapez dans le format suivant : yyyy-mm-dd ");
+					}catch(SauvegardeImpossible e ) {
+						System.out.println(e);
 					}
 					
 				}

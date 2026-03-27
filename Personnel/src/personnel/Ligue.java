@@ -64,11 +64,13 @@ public class Ligue implements Serializable, Comparable<Ligue>
 	/**
 	 * Change le nom.
 	 * @param nom le nouveau nom de la ligue.
+	 * @throws SauvegardeImpossible 
 	 */
 
-	public void setNom(String nom)
+	public void setNom(String nom) throws SauvegardeImpossible
 	{
 		this.nom = nom;
+		gestionPersonnel.update(this);
 	}
 
 	/**
