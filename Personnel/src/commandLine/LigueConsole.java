@@ -68,7 +68,7 @@ public class LigueConsole
 		});
 	}
 	
-	private Menu editerLigue(Ligue ligue)
+	private Menu editerLigue(Ligue ligue) 
 	{
 		Menu menu = new Menu("Editer " + ligue.getNom());
 		menu.add(afficher(ligue));
@@ -141,7 +141,9 @@ public class LigueConsole
 					// reuse existing EmployeConsole menu for editing
 					menu.add(employeConsole.editerEmploye(employe));
 					// add delete option
-					menu.add(new Option("Supprimer l'employé", "s", () -> { employe.remove(); }));
+					menu.add(new Option("Supprimer l'employé", "s", () -> { 
+						employe.remove();
+						}));
 					menu.addBack("q");
 					return menu;
 				}

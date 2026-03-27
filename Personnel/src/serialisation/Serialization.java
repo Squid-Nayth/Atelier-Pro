@@ -78,4 +78,8 @@ public class Serialization implements personnel.Passerelle
 	public void delete(Ligue ligue) throws SauvegardeImpossible {
 		// La suppression est prise en charge par la sérialisation complète de l'objet
 	}
+	@Override
+	public void delete(Employe employe) throws SauvegardeImpossible {
+		// La suppression est prise en charge par la sérialisation complète de l'objet
+	}
 }

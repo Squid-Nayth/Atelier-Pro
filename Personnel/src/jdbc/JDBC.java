@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 //Bonjour
 
@@ -39,15 +41,25 @@ public class JDBC implements Passerelle
 	    GestionPersonnel gestionPersonnel = new GestionPersonnel();
 	    try
 	    {
-	        // Chargement de toutes les ligues existantes en base
-	        String requete = "select * from ligue";
+	        // Chargement de toutes les ligues, avec l'id de leur administrateur via LEFT JOIN
+	        // (NULL si c'est le root qui administre)
+	        String requete =
+	            "SELECT l.num_ligue, l.nom, e.Num_employe AS num_admin " +
+	            "FROM ligue l " +
+	            "LEFT JOIN employe e ON e.num_ligue_administrer = l.num_ligue";
 	        Statement instruction = connection.createStatement();
 	        ResultSet ligues = instruction.executeQuery(requete);
+	        Map<Ligue, Integer> adminsACharger = new HashMap<>();
 	        while (ligues.next())
-	            gestionPersonnel.addLigue(ligues.getInt("num_ligue"), ligues.getString("nom"));
+	        {
+	            Ligue ligue = gestionPersonnel.addLigue(ligues.getInt("num_ligue"), ligues.getString("nom"));
+	            int numAdmin = ligues.getInt("num_admin");
+	            // wasNull() détecte si num_admin était NULL (administrateur = root par défaut)
+	            if (!ligues.wasNull())
+	                adminsACharger.put(ligue, numAdmin);
+	        }
 
-	        // Requête avec jointure pour charger tous les employés
-	        // et leur ligue associée en une seule requête
+	        // Chargement de tous les employés avec leur ligue d'appartenance
 	        String requeteEmployes =
 	            "SELECT e.Num_employe, e.Nom, e.Prenom, e.Mail, e.Password, " +
 	            "e.Date_arrivee, e.Date_depart, e.num_ligue_appartenir " +
@@ -57,10 +69,7 @@ public class JDBC implements Passerelle
 	        ResultSet employes = instruction.executeQuery(requeteEmployes);
 	        while (employes.next())
 	        {
-	            // Récupération de la ligue correspondante déjà chargée en mémoire
 	            Ligue ligue = gestionPersonnel.getLigue(employes.getInt("num_ligue_appartenir"));
-
-	            // Création de l'objet Employé à partir des données lues en base
 	            ligue.addEmploye(
 	                employes.getInt("Num_employe"),
 	                employes.getString("Nom"),
@@ -72,26 +81,11 @@ public class JDBC implements Passerelle
 	            );
 	        }
 
-	        // Chargement des administrateurs de ligue
-        String requeteAdmins =
-            "SELECT Num_employe, num_ligue_administrer FROM employe " +
-            "WHERE num_ligue_administrer IS NOT NULL";
-        ResultSet admins = instruction.executeQuery(requeteAdmins);
-        while (admins.next())
-        {
-            int numLigue = admins.getInt("num_ligue_administrer");
-            int numEmploye = admins.getInt("Num_employe");
-            Ligue ligue = gestionPersonnel.getLigue(numLigue);
-            if (ligue != null)
-                for (Employe emp : ligue.getEmployes())
-                    if (emp.getId() == numEmploye)
-                    {
-                        ligue.setAdministrateurSansSauvegarde(emp);
-                        break;
-                    }
-        }
+	        // Les employés sont maintenant chargés : on peut résoudre les administrateurs
+	        for (Map.Entry<Ligue, Integer> entry : adminsACharger.entrySet())
+	            entry.getKey().setAdministrateurDepuisBase(entry.getValue());
 
-        // Chargement du root depuis la base
+	        // Chargement du root depuis la base
 	        // Le root est identifié par l'absence de ligue (num_ligue_appartenir IS NULL)
 	        String requeteRoot =
 	            "SELECT Num_employe, Nom, Password FROM employe " +
@@ -218,6 +212,23 @@ public class JDBC implements Passerelle
 	 * @return l'identifiant généré par la base de données.
 	 * @throws SauvegardeImpossible si l'insertion échoue.
 	 */
+	
+	@Override
+	public void delete(Employe employe) throws SauvegardeImpossible
+	{
+		try
+		{
+			PreparedStatement supprimerLigue = connection.prepareStatement(
+				"DELETE FROM employe WHERE Num_employe = ?");
+			supprimerLigue.setInt(1, employe.getId());
+			supprimerLigue.executeUpdate();
+		}
+		catch (SQLException exception)
+		{
+			exception.printStackTrace();
+			throw new SauvegardeImpossible(exception);
+		}
+	}
 	@Override
 	public int insert(Employe employe) throws SauvegardeImpossible
 	{
@@ -256,14 +267,35 @@ public class JDBC implements Passerelle
 	    }
 	}
 	
+	
 	@Override
 	public void update(Employe employe) throws SauvegardeImpossible
 	{
+		
+		if(employe.estRoot()) {
+			try
+		    {
+
+		        PreparedStatement instruction = connection.prepareStatement(
+		            "UPDATE employe set Nom = ? , Prenom = ? , Password = ?  where Num_employe = ? "
+		        );
+		        instruction.setString(1, employe.getNom());
+		        instruction.setString(2, employe.getPrenom());
+		        instruction.setString(3, employe.getPassword());
+		        instruction.executeUpdate();
+		        instruction.setInt(4, employe.getId());
+		    }
+		    catch (SQLException exception)
+		    {
+		        exception.printStackTrace();
+		        throw new SauvegardeImpossible(exception);
+		    } 
+		}else {
 	    try
 	    {
 
 	        PreparedStatement instruction = connection.prepareStatement(
-	            "UPDATE employe set Mail = ? , Nom = ? , Prenom = ? , Password = ? , Date_arrivee = ? , Date_depart = ? , num_ligue_appartenir = ? where id = ? "
+	            "UPDATE employe set Mail = ? , Nom = ? , Prenom = ? , Password = ? , Date_arrivee = ? , Date_depart = ? , num_ligue_appartenir = ? where Num_employe = ? "
 	        );
 	        instruction.setString(1, employe.getMail());
 	        instruction.setString(2, employe.getNom());
@@ -283,6 +315,8 @@ public class JDBC implements Passerelle
 	        exception.printStackTrace();
 	        throw new SauvegardeImpossible(exception);
 	    } 
+	}
+	
 	}
 	
 }

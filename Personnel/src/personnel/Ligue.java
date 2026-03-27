@@ -111,6 +111,23 @@ public class Ligue implements Serializable, Comparable<Ligue>
 	}
 
 	/**
+	 * Cherche parmi les employés de la ligue celui dont l'identifiant
+	 * correspond et le désigne comme administrateur.
+	 * Réservé au chargement depuis la base de données, après que les
+	 * employés de la ligue ont été chargés.
+	 * @param idAdministrateur l'identifiant en base de l'administrateur.
+	 */
+	public void setAdministrateurDepuisBase(int idAdministrateur)
+	{
+		for (Employe emp : employes)
+			if (emp.getId() == idAdministrateur)
+			{
+				this.administrateur = emp;
+				return;
+			}
+	}
+
+	/**
 	 * Retourne les employés de la ligue.
 	 * @return les employés de la ligue dans l'ordre alphabétique.
 	 */
