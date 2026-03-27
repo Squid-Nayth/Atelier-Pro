@@ -186,6 +186,30 @@ public class JDBC implements Passerelle
 			throw new SauvegardeImpossible(exception);
 		}
 	}
+	@Override
+	public void delete(Ligue ligue) throws SauvegardeImpossible
+	{
+		try
+		{
+			// Suppression des employés de la ligue (contrainte FK)
+			PreparedStatement supprimerEmployes = connection.prepareStatement(
+				"DELETE FROM employe WHERE num_ligue_appartenir = ?");
+			supprimerEmployes.setInt(1, ligue.getId());
+			supprimerEmployes.executeUpdate();
+
+			// Suppression de la ligue
+			PreparedStatement supprimerLigue = connection.prepareStatement(
+				"DELETE FROM ligue WHERE num_ligue = ?");
+			supprimerLigue.setInt(1, ligue.getId());
+			supprimerLigue.executeUpdate();
+		}
+		catch (SQLException exception)
+		{
+			exception.printStackTrace();
+			throw new SauvegardeImpossible(exception);
+		}
+	}
+
 	/**
 	 * Insère un employé en base de données.
 	 * Utilise un SELECT avec jointure sur la table ligue pour récupérer

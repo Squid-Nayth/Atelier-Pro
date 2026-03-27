@@ -71,6 +71,11 @@ public class Serialization implements personnel.Passerelle
 	@Override
 	public void update(Employe employe) throws SauvegardeImpossible {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void delete(Ligue ligue) throws SauvegardeImpossible {
+		// La suppression est prise en charge par la sérialisation complète de l'objet
 	}
 }
