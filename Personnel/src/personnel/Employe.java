@@ -17,6 +17,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	private static final long serialVersionUID = 4795721718037994734L;
 	private String nom, prenom, password, mail;
 	private Ligue ligue;
+	private Ligue ligueAdministree = null;
 	private GestionPersonnel gestionPersonnel;
 	// dates de l'employé (remplacent la classe personnel.LocalDate)
 	private LocalDate dateArrivee;
@@ -222,8 +223,24 @@ public class Employe implements Serializable, Comparable<Employe>
 	 */
 	
 	public Ligue getLigue()
-	{ 
+	{
 		return ligue;
+	}
+
+	public Ligue getLigueAdministree()
+	{
+		return ligueAdministree;
+	}
+
+	void setLigueAdministree(Ligue ligue) throws SauvegardeImpossible
+	{
+		this.ligueAdministree = ligue;
+		gestionPersonnel.update(this);
+	}
+
+	void setLigueAdminSansSauvegarde(Ligue ligue)
+	{
+		this.ligueAdministree = ligue;
 	}
 
 	

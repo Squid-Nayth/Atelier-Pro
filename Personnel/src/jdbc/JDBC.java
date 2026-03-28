@@ -156,23 +156,6 @@ public class JDBC implements Passerelle
 			instruction.setString(1, ligue.getNom());
 			instruction.setInt(2, ligue.getId());
 			instruction.executeUpdate();
-
-			// Réinitialisation de l'ancien administrateur de cette ligue
-			PreparedStatement clearAdmin = connection.prepareStatement(
-				"UPDATE employe SET num_ligue_administrer = NULL WHERE num_ligue_administrer = ?");
-			clearAdmin.setInt(1, ligue.getId());
-			clearAdmin.executeUpdate();
-
-			// Assignation du nouvel administrateur (sauf si c'est le root)
-			Employe admin = ligue.getAdministrateur();
-			if (!admin.estRoot())
-			{
-				PreparedStatement setAdmin = connection.prepareStatement(
-					"UPDATE employe SET num_ligue_administrer = ? WHERE Num_employe = ?");
-				setAdmin.setInt(1, ligue.getId());
-				setAdmin.setInt(2, admin.getId());
-				setAdmin.executeUpdate();
-			}
 		}
 		catch (SQLException exception)
 		{
@@ -272,51 +255,53 @@ public class JDBC implements Passerelle
 	public void update(Employe employe) throws SauvegardeImpossible
 	{
 		
-		if(employe.estRoot()) {
-			try
-		    {
-
-		        PreparedStatement instruction = connection.prepareStatement(
-		            "UPDATE employe set Nom = ? , Prenom = ? , Password = ?  where Num_employe = ? "
-		        );
-		        instruction.setString(1, employe.getNom());
-		        instruction.setString(2, employe.getPrenom());
-		        instruction.setString(3, employe.getPassword());
-		        instruction.executeUpdate();
-		        instruction.setInt(4, employe.getId());
-		    }
-		    catch (SQLException exception)
-		    {
-		        exception.printStackTrace();
-		        throw new SauvegardeImpossible(exception);
-		    } 
-		}else {
-	    try
-	    {
-
-	        PreparedStatement instruction = connection.prepareStatement(
-	            "UPDATE employe set Mail = ? , Nom = ? , Prenom = ? , Password = ? , Date_arrivee = ? , Date_depart = ? , num_ligue_appartenir = ? where Num_employe = ? "
-	        );
-	        instruction.setString(1, employe.getMail());
-	        instruction.setString(2, employe.getNom());
-	        instruction.setString(3, employe.getPrenom());
-	        instruction.setString(4, employe.getPassword());
-	        instruction.setDate(5, java.sql.Date.valueOf(employe.getDateArrivee()));
-	        instruction.setDate(6, java.sql.Date.valueOf(employe.getDateDepart()));
-	        if (employe.getLigue() != null)
-	            instruction.setInt(7, employe.getLigue().getId());
-	        else
-	            instruction.setNull(7, java.sql.Types.INTEGER);
-	        instruction.executeUpdate();
-	        instruction.setInt(8, employe.getId());
-	    }
-	    catch (SQLException exception)
-	    {
-	        exception.printStackTrace();
-	        throw new SauvegardeImpossible(exception);
-	    } 
+		if (employe.estRoot()) {
+		try
+		{
+		    PreparedStatement instruction = connection.prepareStatement(
+		        "UPDATE employe SET Nom = ? , Prenom = ? , Password = ? WHERE Num_employe = ?"
+		    );
+		    instruction.setString(1, employe.getNom());
+		    instruction.setString(2, employe.getPrenom());
+		    instruction.setString(3, employe.getPassword());
+		    instruction.setInt(4, employe.getId());
+		    instruction.executeUpdate();
+		}
+		catch (SQLException exception)
+		{
+		    exception.printStackTrace();
+		    throw new SauvegardeImpossible(exception);
+		}
+	} else {
+		try
+		{
+		    PreparedStatement instruction = connection.prepareStatement(
+		        "UPDATE employe SET Mail = ? , Nom = ? , Prenom = ? , Password = ? , Date_arrivee = ? , Date_depart = ? , num_ligue_appartenir = ? , num_ligue_administrer = ? WHERE Num_employe = ?"
+		    );
+		    instruction.setString(1, employe.getMail());
+		    instruction.setString(2, employe.getNom());
+		    instruction.setString(3, employe.getPrenom());
+		    instruction.setString(4, employe.getPassword());
+		    instruction.setDate(5, java.sql.Date.valueOf(employe.getDateArrivee()));
+		    instruction.setDate(6, java.sql.Date.valueOf(employe.getDateDepart()));
+		    if (employe.getLigue() != null)
+		        instruction.setInt(7, employe.getLigue().getId());
+		    else
+		        instruction.setNull(7, java.sql.Types.INTEGER);
+		    if (employe.getLigueAdministree() != null)
+		        instruction.setInt(8, employe.getLigueAdministree().getId());
+		    else
+		        instruction.setNull(8, java.sql.Types.INTEGER);
+		    instruction.setInt(9, employe.getId());
+		    instruction.executeUpdate();
+		}
+		catch (SQLException exception)
+		{
+		    exception.printStackTrace();
+		    throw new SauvegardeImpossible(exception);
+		}
 	}
-	
+
 	}
 	
 }
