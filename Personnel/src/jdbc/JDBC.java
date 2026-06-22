@@ -217,12 +217,11 @@ public class JDBC implements Passerelle
 	{
 	    try
 	    {
-	       
-	        // on remplace VALUES (?, ?, ?, ?, ?, ?, ?) par un SELECT avec JOIN
-	        // sur la table ligue pour récupérer num_ligue directement en base
+	        // Insertion directe avec VALUES au lieu de SELECT
+	        // Cela fonctionne aussi bien pour le root (NULL) que pour les employés (avec ligue)
 	        PreparedStatement instruction = connection.prepareStatement(
 	            "INSERT INTO employe (Mail, Nom, Prenom, Password, Date_arrivee, Date_depart, num_ligue_appartenir) " +
-	            "SELECT ?, ?, ?, ?, ?, ?, num_ligue FROM ligue WHERE num_ligue = ?",
+	            "VALUES (?, ?, ?, ?, ?, ?, ?)",
 	            Statement.RETURN_GENERATED_KEYS
 	        );
 	        instruction.setString(1, employe.getMail());
@@ -231,17 +230,16 @@ public class JDBC implements Passerelle
 	        instruction.setString(4, employe.getPassword());
 	        instruction.setDate(5, java.sql.Date.valueOf(employe.getDateArrivee()));
 	        instruction.setDate(6, java.sql.Date.valueOf(employe.getDateDepart()));
-	        // Jointure avec la ligue : récupération de num_ligue depuis la table ligue
-	        // Si root (pas de ligue), on insère NULL
+	        // Si employe a une ligue, on insère son ID, sinon NULL pour le root
 	        if (employe.getLigue() != null)
 	            instruction.setInt(7, employe.getLigue().getId());
 	        else
 	            instruction.setNull(7, java.sql.Types.INTEGER);
-	        instruction.executeUpdate();
-	        // Récupération de l'identifiant auto-généré par la base de données
-	        ResultSet id = instruction.getGeneratedKeys();
-	        id.next();
-	        return id.getInt(1);
+        instruction.executeUpdate();
+        // Récupération de l'identifiant auto-généré par la base de données
+        ResultSet id = instruction.getGeneratedKeys();
+        id.next();
+        return id.getInt(1);
 	    }
 	    catch (SQLException exception)
 	    {
