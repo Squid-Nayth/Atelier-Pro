@@ -32,22 +32,23 @@ public class GestionPersonnel implements Serializable
 	 */
 	
 	public static GestionPersonnel getGestionPersonnel()
-	{
-		if (gestionPersonnel == null)
-		{
-			gestionPersonnel = passerelle.getGestionPersonnel();
-			if (gestionPersonnel == null)
-				gestionPersonnel = new GestionPersonnel();
-			try {
-				// Création du root et insertion en base de données
-		        gestionPersonnel.addRoot("root", "toor");
-			}
-			catch(SauvegardeImpossible e) {
-				 System.err.println("Impossible d'insérer le root : " + e);
-			}
-		}
-		return gestionPersonnel;
-	}
+    {
+        if (gestionPersonnel == null)
+        {
+            gestionPersonnel = passerelle.getGestionPersonnel();
+            if (gestionPersonnel == null)
+                gestionPersonnel = new GestionPersonnel();
+            if (gestionPersonnel.getRoot() == null)
+                try {
+                    // Création du root uniquement au premier lancement
+                    gestionPersonnel.addRoot("root", "toor");
+                }
+                catch(SauvegardeImpossible e) {
+                     System.err.println("Impossible d'insérer le root : " + e);
+                }
+        }
+        return gestionPersonnel;
+    }
 
 	public GestionPersonnel()
 	{
@@ -141,7 +142,7 @@ public class GestionPersonnel implements Serializable
 	{
 		passerelle.update(ligue);
 	}
-	void update(Employe employe) throws SauvegardeImpossible
+	public void update(Employe employe) throws SauvegardeImpossible
 	{
 		passerelle.update(employe);
 	}
