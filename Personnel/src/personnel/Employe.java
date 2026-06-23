@@ -35,7 +35,7 @@ public class Employe implements Serializable, Comparable<Employe>
 		this.gestionPersonnel = gestionPersonnel;
 		this.nom = nom;
 		this.prenom = prenom;
-		this.password = password;
+		this.password = PasswordHasher.hashPassword(password);
 		this.mail = mail;
 		this.ligue = ligue;
 		// validation des dates
@@ -55,7 +55,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	Employe(GestionPersonnel gestionPersonnel, String nom, String password) throws SauvegardeImpossible
 	{
 		// Appel de la surcharge sans insertion pour initialiser les champs,
-		this(gestionPersonnel, -1, nom, password); 
+		this(gestionPersonnel, -1, nom, PasswordHasher.hashPassword(password)); 
 		// Insertion en base et récupération de l'id généré après initialisation
 	    this.id = gestionPersonnel.insert(this);  
 	}
@@ -202,7 +202,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	
 	public boolean checkPassword(String password)
 	{
-		return this.password.equals(password);
+		return PasswordHasher.checkPassword(password, this.password);
 	}
 
 	/**
@@ -213,7 +213,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	
 	public void setPassword(String password) throws SauvegardeImpossible
 	{
-		this.password= password;
+		this.password = PasswordHasher.hashPassword(password);
 		gestionPersonnel.update(this);
 	}
 
