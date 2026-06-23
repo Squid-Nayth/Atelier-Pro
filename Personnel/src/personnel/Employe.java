@@ -251,19 +251,27 @@ public class Employe implements Serializable, Comparable<Employe>
 	 * récupère les droits d'administration sur sa ligue.
 	 */
 	
-	public void remove()
+	public void remove() throws SauvegardeImpossible
 	{
-		Employe root = gestionPersonnel.getRoot();
-		if (this != root)
-		{
-			if (estAdmin(getLigue()))
-				try { getLigue().setAdministrateur(root); }
-				catch (SauvegardeImpossible e) { throw new RuntimeException(e); }
-			getLigue().remove(this);
-		}
-		else
-			throw new ImpossibleDeSupprimerRoot();
+	    Employe root = gestionPersonnel.getRoot();
+	    if (this != root)
+	    {
+	        if (estAdmin(getLigue()))
+	            try { 
+	                getLigue().setAdministrateur(root); 
+	            }
+	            catch (SauvegardeImpossible e) { 
+	                throw new RuntimeException(e); 
+	            }
+	        
+	        getLigue().remove(this);           // Supprime de la ligue en mémoire
+	        gestionPersonnel.delete(this);     // Supprime de la BD
+	    }
+	    else
+	        throw new ImpossibleDeSupprimerRoot();
 	}
+
+
 
 	@Override
 	public int compareTo(Employe autre)

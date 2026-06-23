@@ -142,7 +142,12 @@ public class LigueConsole
 					menu.add(employeConsole.editerEmploye(employe));
 					// add delete option
 					menu.add(new Option("Supprimer l'employé", "s", () -> { 
-						employe.remove();
+						try {
+							employe.remove();
+						} catch (SauvegardeImpossible e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						}));
 					menu.addBack("q");
 					return menu;

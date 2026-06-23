@@ -206,7 +206,12 @@ public class EmployesListFrame extends JDialog
 
         if (confirmation == JOptionPane.YES_OPTION)
         {
-            employe.remove();
+            try {
+				employe.remove();
+			} catch (SauvegardeImpossible e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             refreshEmployes();
         }
     }

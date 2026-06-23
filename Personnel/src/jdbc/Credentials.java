@@ -12,7 +12,7 @@ public class Credentials
 	
 	static String getUrl() 
 	{
-		return "jdbc:" + driver + "://" + host + ":" + port + "/" + database ;
+		return "jdbc:" + driver + "://" + host + ":" + port + "/" + database + "?connectionTimeZone=Europe/Paris&forceConnectionTimeZoneToSession=true" ;
 	}
 	
 	static String getDriverClassName()
