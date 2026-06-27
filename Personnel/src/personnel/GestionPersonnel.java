@@ -91,6 +91,29 @@ public class GestionPersonnel implements Serializable
 	            return ligue;
 	    return null;
 	}
+	
+	/**
+	 * Recherche un employé par son adresse mail parmi tous les employés
+	 * de toutes les ligues. Utilisé pour la connexion des employés.
+	 * @param mail l'adresse mail à rechercher.
+	 * @return l'employé correspondant, ou null si non trouvé.
+	 */
+	public Employe findByMail(String mail)
+	{
+	    // Vérification que le mail n'est pas vide
+	    if (mail == null || mail.isBlank())
+	        return null;
+	    
+	    // On parcourt toutes les ligues et tous leurs employés
+	    for (Ligue ligue : ligues)
+	        for (Employe employe : ligue.getEmployes())
+	            // Comparaison insensible à la casse (majuscules/minuscules)
+	            if (mail.equalsIgnoreCase(employe.getMail()))
+	                return employe;
+	    
+	    // Aucun employé trouvé avec ce mail
+	    return null;
+	}
 
 	/**
 	 * Retourne toutes les ligues enregistrées.

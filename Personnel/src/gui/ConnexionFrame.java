@@ -17,9 +17,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
+import personnel.Employe;
 import personnel.GestionPersonnel;
 
 public class ConnexionFrame extends JFrame
@@ -27,12 +29,14 @@ public class ConnexionFrame extends JFrame
 	private static final long serialVersionUID = 1L;
 
 	private final GestionPersonnel gestionPersonnel;
+	private final JTextField identifiantField;
 	private final JPasswordField passwordField;
 
 	public ConnexionFrame(GestionPersonnel gestionPersonnel)
 	{
 		super("M2L - Connexion");
 		this.gestionPersonnel = gestionPersonnel;
+		this.identifiantField = new JTextField(18);
 		this.passwordField = new JPasswordField(18);
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -76,31 +80,54 @@ public class ConnexionFrame extends JFrame
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 12, 10);
 		constraints.anchor = GridBagConstraints.LINE_END;
-		card.add(new JLabel("Mot de passe :"), constraints);
 
+		//  champ identifiant (mail pour employé, nom pour root)
+		card.add(new JLabel("Identifiant :"), constraints);
+		constraints.gridx = 1;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1.0;
+		identifiantField.setToolTipText("Votre mail, ou \"root\" pour l'administrateur");
+		identifiantField.addActionListener(new LoginAction());
+		card.add(identifiantField, constraints);
+
+		// Champ mot de passe (inchangé)
+		constraints.gridx = 0;
+		constraints.gridy++;
+		constraints.weightx = 0;
+		constraints.fill = GridBagConstraints.NONE;
+		card.add(new JLabel("Mot de passe :"), constraints);
 		constraints.gridx = 1;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 1.0;
 		passwordField.addActionListener(new LoginAction());
 		card.add(passwordField, constraints);
 
+		//  lien mot de passe oublié
 		constraints.gridx = 0;
 		constraints.gridy++;
 		constraints.gridwidth = 2;
 		constraints.weightx = 0;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets = new Insets(6, 0, 8, 0);
+		constraints.insets = new Insets(4, 0, 4, 0);
+		JLabel forgotLabel = new JLabel("Mot de passe oublié ?");
+		forgotLabel.setForeground(new Color(67, 115, 167));
+		forgotLabel.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
+		forgotLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent e) {
+		        //  Ouvre le dialog de réinitialisation du mot de passe
+		        new MotDePasseOublieDialog(ConnexionFrame.this, gestionPersonnel).setVisible(true);
+		    }
+		});
+		card.add(forgotLabel, constraints);
 
+		//  Le bouton doit être sur une ligne différente (gridy++)
+		constraints.gridy++;
+		constraints.insets = new Insets(6, 0, 8, 0);
 		JButton loginButton = new JButton(new LoginAction());
 		loginButton.setText("Se connecter");
 		card.add(loginButton, constraints);
-
-		constraints.gridy++;
-		constraints.insets = new Insets(0, 0, 0, 0);
-		JLabel hint = new JLabel("Compte par défaut : root / toor");
-		hint.setForeground(new Color(120, 120, 120));
-		card.add(hint, constraints);
 
 		return card;
 	}
@@ -108,7 +135,7 @@ public class ConnexionFrame extends JFrame
 	private JLabel buildFooter()
 	{
 		JLabel footer = new JLabel(
-				"\u00A9 2026, Nathan Michel - Tous droits réservés",
+				"\u00A9 2026, Lucresse Zeufack - Tous droits réservés",
 				SwingConstants.CENTER);
 		footer.setForeground(new Color(215, 225, 240));
 		footer.setBorder(BorderFactory.createEmptyBorder(14, 0, 0, 0));
@@ -117,23 +144,47 @@ public class ConnexionFrame extends JFrame
 
 	private void attemptLogin()
 	{
-		String password = new String(passwordField.getPassword());
-		if (gestionPersonnel.getRoot() != null
-				&& gestionPersonnel.getRoot().checkPassword(password))
-		{
-			LiguesFrame liguesFrame = new LiguesFrame(gestionPersonnel);
-			liguesFrame.setVisible(true);
-			dispose();
-			return;
-		}
+		String identifiant = identifiantField.getText().trim();
+	    String password = new String(passwordField.getPassword());
 
-		passwordField.selectAll();
-		passwordField.requestFocusInWindow();
-		JOptionPane.showMessageDialog(
-				this,
-				"Mot de passe incorrect.",
-				"Connexion refusée",
-				JOptionPane.ERROR_MESSAGE);
+	    // Vérification que les champs ne sont pas vides
+	    if (identifiant.isEmpty() || password.isEmpty())
+	    {
+	        JOptionPane.showMessageDialog(this,
+	                "Veuillez remplir tous les champs.",
+	                "Champs manquants",
+	                JOptionPane.WARNING_MESSAGE);
+	        return;
+	    }
+
+	    // ✅ Tentative connexion root : on compare le nom (pas le mail)
+	    Employe root = gestionPersonnel.getRoot();
+	    if (root != null && identifiant.equals(root.getNom()) && root.checkPassword(password))
+	    {
+	        LiguesFrame liguesFrame = new LiguesFrame(gestionPersonnel);
+	        liguesFrame.setVisible(true);
+	        dispose();
+	        return;
+	    }
+
+	    //  Tentative connexion employé : on cherche par mail
+	    Employe employe = gestionPersonnel.findByMail(identifiant);
+	    if (employe != null && employe.checkPassword(password))
+	    {
+	        // Ouvre la vue employé (à créer ensuite)
+	        EmployeAccueilFrame accueilFrame = new EmployeAccueilFrame(gestionPersonnel, employe);
+	        accueilFrame.setVisible(true);
+	        dispose();
+	        return;
+	    }
+
+	    // Échec de la connexion
+	    passwordField.setText("");
+	    passwordField.requestFocusInWindow();
+	    JOptionPane.showMessageDialog(this,
+	            "Identifiant ou mot de passe incorrect.",
+	            "Connexion refusée",
+	            JOptionPane.ERROR_MESSAGE);
 	}
 
 	private final class LoginAction extends AbstractAction

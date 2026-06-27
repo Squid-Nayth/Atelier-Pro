@@ -23,6 +23,8 @@ public class Employe implements Serializable, Comparable<Employe>
 	private LocalDate dateArrivee;
 	private LocalDate dateDepart;
 	private int id = -1;
+	//photo par défaut (default_avatar.png)
+	private String photoPath = null;
 	
 	
 	
@@ -191,6 +193,29 @@ public class Employe implements Serializable, Comparable<Employe>
 		this.mail = mail;
 		gestionPersonnel.update(this);
 	}
+	
+	/**
+	 * Retourne le chemin vers la photo de profil de l'employé.
+	 * @return le chemin du fichier image, ou null si photo par défaut.
+	 */
+	public String getPhotoPath()
+	{
+	    return photoPath;
+	}
+
+	/**
+	 * Modifie le chemin de la photo de profil de l'employé.
+	 * Passer null pour revenir à la photo par défaut.
+	 * @param photoPath le chemin du fichier image, ou null pour la photo par défaut.
+	 */
+	public void setPhotoPath(String photoPath)
+	{
+	    this.photoPath = photoPath;
+	    // Pas d'appel à gestionPersonnel.update() car
+	    // la colonne photo_path n'existe pas encore en BDD.
+	}
+	
+	
 
 	/**
 	 * Retourne vrai ssi le password passé en paramètre est bien celui
